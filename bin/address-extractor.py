@@ -2,15 +2,13 @@ import csv
 import re
 import time
 import requests
-import os
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv  # <-- Add this import
 
 load_dotenv()  # <-- Load environment variables from .env
 
 # ===== Config =====
-INPUT_FILE = "file.csv"
-OUTPUT_FILE = "file_with_addresses.csv"
+INPUT_FILE = "out/output.csv"
 URL = "https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni"
 
 COOKIE = os.environ.get("RC_COOKIE", "")
@@ -35,7 +33,6 @@ def extract_address(html):
         return "", ""
     
     full_addr = m.group(1).strip()
-    # Split postal code if present
     postal_match = re.search(r"(.*),\s*(LT-\d{5})$", full_addr)
     if postal_match:
         address = postal_match.group(1).strip()
@@ -60,31 +57,35 @@ def build_payload(pastaba, vardas, pavarde, gim_data):
 
 # ===== Main =====
 def main():
-    results = []
+    updated_rows = []
     with open(INPUT_FILE, newline="", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
-        for row in reader:  # No header skip
-            if len(row) < 4:
+        for row in reader:
+            if len(row) < 8:
+                updated_rows.append(row + ["", ""])  # jei trūksta duomenų, pridedam tuščius laukus
                 continue
-            pastaba, vardas, pavarde, gim_data = row[:4]
+
+            pastaba = row[0]
+            vardas = row[5]
+            pavarde = row[6]
+            gim_data = row[7]
 
             payload = build_payload(pastaba, vardas, pavarde, gim_data)
             response = requests.post(URL, headers=HEADERS, data=payload)
-            
+
             if response.status_code == 200:
                 address, postal_code = extract_address(response.text)
             else:
                 address, postal_code = "", ""
-            
-            results.append([pastaba, vardas, pavarde, gim_data, address, postal_code])
 
-            time.sleep(1)  # Delay between requests
+            updated_rows.append(row + [address, postal_code])
+            time.sleep(3)
 
-    with open(OUTPUT_FILE, "w", newline="", encoding="utf-8") as outcsv:
+    with open(INPUT_FILE, "w", newline="", encoding="utf-8") as outcsv:
         writer = csv.writer(outcsv)
-        writer.writerows(results)
+        writer.writerows(updated_rows)
 
-    print(f"Done. Saved to {OUTPUT_FILE}")
+    print(f"Failas papildytas: {INPUT_FILE}")
 
 if __name__ == "__main__":
     main()
