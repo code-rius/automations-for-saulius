@@ -5,6 +5,7 @@ import csv
 
 folder_path = Path(__file__).parent.parent / "resources"
 output_csv = Path(__file__).parent.parent / "out/output.csv"
+info_txt = folder_path / "info.txt"
 
 patterns = {
     "registro_nr": re.compile(r"Registro Nr\.:?\s*([^\n]+)"),
@@ -12,6 +13,16 @@ patterns = {
     "kadastro_nr": re.compile(r"pavadinimas:?\s*([^\n]+)"),
     "panaudos_gavejas": re.compile(r"Panaudos gavėjas:?\s*([^\n]+)")
 }
+
+# Read info.txt values
+info_values = ["", "", ""]
+if info_txt.exists():
+    with open(info_txt, encoding="utf-8") as f:
+        lines = f.readlines()
+        for i, line in enumerate(lines):
+            if i < 3:
+                parts = line.strip().split("=", 1)
+                info_values[i] = parts[1] if len(parts) == 2 else ""
 
 rows = []
 
@@ -70,7 +81,11 @@ def process_role_block(lines, start_keyword, role_label, registro_nr, adresas, u
 
                 first_name, surname = split_name(name_clean, entry_type)
 
-                rows.append((registro_nr, adresas, unikalus_nr, kadastro_nr, role_label, first_name, surname, id_or_date, entry_type))
+                rows.append((
+                    registro_nr, adresas, unikalus_nr, kadastro_nr, role_label,
+                    first_name, surname, id_or_date, entry_type,
+                    info_values[0], info_values[1], info_values[2]
+                ))
 
 for pdf_file in folder_path.glob("*.pdf"):
     with pdfplumber.open(pdf_file) as pdf:
@@ -122,13 +137,17 @@ for pdf_file in folder_path.glob("*.pdf"):
 
         first_name, surname = split_name(name_clean, entry_type)
 
-        rows.append((registro_nr, adresas, unikalus_nr, kadastro_nr, "Panaudos gavėjas", first_name, surname, id_or_date, entry_type))
+        rows.append((
+            registro_nr, adresas, unikalus_nr, kadastro_nr, "Panaudos gavėjas",
+            first_name, surname, id_or_date, entry_type,
+            info_values[0], info_values[1], info_values[2]
+        ))
 
 rows = sorted(set(rows))
 
 with open(output_csv, "w", newline="", encoding="utf-8") as f:
     writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
     for row in rows:
-        writer.writerow(row)  # Only necessary fields will be quoted
+        writer.writerow(row)
 
 print(f"Saved {len(rows)} unique rows to {output_csv}")

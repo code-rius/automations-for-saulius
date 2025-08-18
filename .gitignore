@@ -208,3 +208,6 @@ __marimo__/
 
 resources/*.pdf
 out/*.csv
+resources/*.docx
+resources/*.txt
+*.docx
