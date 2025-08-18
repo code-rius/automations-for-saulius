@@ -1,9 +1,10 @@
 from pathlib import Path
 import pdfplumber
 import re
+import csv
 
 folder_path = Path(__file__).parent.parent / "resources"
-output_csv = "output.csv"
+output_csv = Path(__file__).parent.parent / "out/output.csv"
 
 patterns = {
     "registro_nr": re.compile(r"Registro Nr\.:?\s*([^\n]+)"),
@@ -126,9 +127,8 @@ for pdf_file in folder_path.glob("*.pdf"):
 rows = sorted(set(rows))
 
 with open(output_csv, "w", newline="", encoding="utf-8") as f:
-    f.write("Registro Nr.;Adresas;Unikalus daikto numeris;Kadastro numeris;Nuosavybe;Vardas;Pavardė;data;asmuo\n")
+    writer = csv.writer(f, quoting=csv.QUOTE_MINIMAL)
     for row in rows:
-        cleaned_row = [field.replace('"', '') if isinstance(field, str) else field for field in row]
-        f.write(";".join(cleaned_row) + "\n")
+        writer.writerow(row)  # Only necessary fields will be quoted
 
 print(f"Saved {len(rows)} unique rows to {output_csv}")

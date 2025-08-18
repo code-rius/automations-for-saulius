@@ -1,11 +1,12 @@
+import os
 import csv
 import re
 import time
 import requests
 from bs4 import BeautifulSoup
-from dotenv import load_dotenv  # <-- Add this import
+from dotenv import load_dotenv
 
-load_dotenv()  # <-- Load environment variables from .env
+load_dotenv()
 
 # ===== Config =====
 INPUT_FILE = "out/output.csv"
