@@ -43,3 +43,5 @@ python pdfreader.py
 **Note:**  
 - `.env` is used to securely store your cookie and other environment variables.
 - Make sure `.env` is not tracked by git (see `.gitignore`).
+
+lmao
