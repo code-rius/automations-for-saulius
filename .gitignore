@@ -211,3 +211,5 @@ out/*.csv
 resources/*.docx
 resources/*.txt
 *.docx
+resources/*.csv
+out/*.txt
