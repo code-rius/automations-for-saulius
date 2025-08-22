@@ -213,3 +213,6 @@ resources/*.txt
 *.docx
 resources/*.csv
 out/*.txt
+resources/VE01_M15/*.pdf
+
+

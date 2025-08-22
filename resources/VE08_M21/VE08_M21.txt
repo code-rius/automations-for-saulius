@@ -1,3 +1,0 @@
-BENDRAS_NR=VE08_M21
-PROJEKTO_NR=2024-72-04-VE08_M21-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE08_M21, Marijampolės sav., Sasnavos sen., Pagelumbiškio k., statybos projektas
