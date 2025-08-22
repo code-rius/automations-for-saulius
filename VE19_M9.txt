@@ -1,0 +1,3 @@
+BENDRAS_NR=VE19_M9
+PROJEKTO_NR=2024-72-04-VE19_M9-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE19_M9, Marijampolės sav., Patašinės sen., Zuikiškių k., statybos projektas

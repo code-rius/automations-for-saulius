@@ -1,0 +1,3 @@
+BENDRAS_NR=VE07_M66
+PROJEKTO_NR=2024-72-04-VE07_M66-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE07_M66, Marijampolės sav., Sasnavos sen., Pasienių k., statybos projektas

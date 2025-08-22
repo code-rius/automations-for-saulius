@@ -1,0 +1,3 @@
+BENDRAS_NR=VE31_M34
+PROJEKTO_NR=2024-72-04-VE31_M34-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE31_M34, Marijampolės sav., Patašinės sen., Gudinės k., statybos projektas

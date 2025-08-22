@@ -1,0 +1,3 @@
+BENDRAS_NR=VE20_M6
+PROJEKTO_NR=2024-72-04-VE20_M6-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE20_M6, Marijampolės sav., Patašinės sen., Grabavos k., statybos projektas

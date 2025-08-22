@@ -1,0 +1,3 @@
+BENDRAS_NR=VE03_M23
+PROJEKTO_NR=2024-72-04-VE03_M23-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE03_M23, Marijampolės sav., Sasnavos sen., Pagelumbiškio k., statybos projektas

@@ -1,0 +1,3 @@
+BENDRAS_NR=VE39_M52
+PROJEKTO_NR=2024-72-04-VE39_M52-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE39_M52, Marijampolės sav., Patašinės sen., Trakiškių k., statybos projektas

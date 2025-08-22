@@ -1,0 +1,3 @@
+BENDRAS_NR=VE40_M51
+PROJEKTO_NR=2024-72-04-VE40_M51-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE40_M51, Marijampolės sav., Patašinės sen., Kuktų k., statybos projektas

@@ -1,0 +1,3 @@
+BENDRAS_NR=VE09_M5
+PROJEKTO_NR=2024-72-04-VE09_M5-XX-PP
+PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE09_M5, Marijampolės sav., Sasnavos sen., Paraišupio k., statybos projektas
