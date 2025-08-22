@@ -1,3 +1,0 @@
-BENDRAS_NR=VE17_M12
-PROJEKTO_NR=2024-72-04-VE17_M12-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE17_M12, Marijampolės sav., Patašinės sen., Geležinių k., statybos projektas

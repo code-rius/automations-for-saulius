@@ -1,3 +1,0 @@
-BENDRAS_NR=VE26_M26
-PROJEKTO_NR=2024-72-04-VE26_M26-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE26_M26, Marijampolės sav., Patašinės sen., Kižių k., statybos projektas

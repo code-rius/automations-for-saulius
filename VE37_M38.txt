@@ -1,3 +1,0 @@
-BENDRAS_NR=VE37_M38
-PROJEKTO_NR=2024-72-04-VE37_M38-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE37_M38, Marijampolės sav., Patašinės sen., Gudinės k., statybos projektas

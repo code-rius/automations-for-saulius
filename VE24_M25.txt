@@ -1,3 +1,0 @@
-BENDRAS_NR=VE24_M25
-PROJEKTO_NR=2024-72-04-VE24_M25-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE24_M25, Marijampolės sav., Patašinės sen., Kižių k., statybos projektas

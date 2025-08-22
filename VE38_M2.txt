@@ -1,3 +1,0 @@
-BENDRAS_NR=VE38_M2
-PROJEKTO_NR=2024-72-04-VE38_M2-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE38_M2, Marijampolės sav., Patašinės sen., Kirmėlinės k., statybos projektas

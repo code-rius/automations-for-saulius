@@ -2,11 +2,17 @@ from pathlib import Path
 import pdfplumber
 import re
 import csv
+import sys
 
-folder_path = Path(__file__).parent.parent / "resources"
-output_csv = Path(__file__).parent.parent / "out/output.csv"
+if len(sys.argv) < 2:
+    print("Usage: python pdfreader.py <folder_name>")
+    sys.exit(1)
 
-# Find any .txt file in resources folder
+folder_name = sys.argv[1]
+folder_path = Path(__file__).parent.parent / "resources" / folder_name
+output_csv = Path(__file__).parent.parent / "out" / f"output_{folder_name}.csv"
+
+# Find any .txt file in the selected resources subfolder
 info_txt_files = list(folder_path.glob("*.txt"))
 info_values = ["", "", ""]
 if info_txt_files:
@@ -151,3 +157,6 @@ with open(output_csv, "w", newline="", encoding="utf-8") as f:
         writer.writerow(row)
 
 print(f"Saved {len(rows)} unique rows to {output_csv}")
+print("Folder path:", folder_path)
+print("PDF files found:", list(folder_path.glob("*.pdf")))
+print("TXT files found:", list(folder_path.glob("*.txt")))

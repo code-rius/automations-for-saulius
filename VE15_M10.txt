@@ -1,3 +1,0 @@
-BENDRAS_NR=VE15_M10
-PROJEKTO_NR=2024-72-04-VE15_M10-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE15_M10, Marijampolės sav., Patašinės sen., Grabavos k., statybos projektas

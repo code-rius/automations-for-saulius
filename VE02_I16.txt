@@ -1,3 +1,0 @@
-BENDRAS_NR=VE02_I16
-PROJEKTO_NR=2024-72-04-VE02_I16-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE02_I16, Marijampolės sav., Sasnavos sen., Barštinės k., statybos projektas

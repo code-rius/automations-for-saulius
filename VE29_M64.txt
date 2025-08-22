@@ -1,3 +1,0 @@
-BENDRAS_NR=VE29_M64
-PROJEKTO_NR=2024-72-04-VE29_M64-XX-PP
-PAVADINIMAS=Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės VE29_M64, Marijampolės sav., Patašinės sen., Igliškėlių k., statybos projektas
