@@ -37,20 +37,20 @@ with open(txt_path, "r", encoding="utf-8-sig") as f:
             if line.startswith(f"{key}="):
                 info[key] = line.strip().split("=", 1)[1]
 
-# Perskaityk csv failą
+# Perskaityk csv failą ir pašalink BOM iš pirmos eilutės, jei yra
 with open(csv_path, "r", newline="", encoding="utf-8-sig") as csvfile:
     reader = list(csv.reader(csvfile))
-
-# Pašalink BOM iš pirmos eilutės, jei yra
-if reader and reader[0]:
-    reader[0][0] = reader[0][0].lstrip('\ufeff')
+    # Pašalink BOM iš pirmo stulpelio kiekvienos eilutės, jei yra
+    for row in reader:
+        if row and row[0]:
+            row[0] = row[0].lstrip('\ufeff')
 
 # Pridėk reikiamą informaciją prie kiekvienos csv eilutės
 updated_rows = []
 for row in reader:
     updated_rows.append(row + [info["BENDRAS_NR"], info["PROJEKTO_NR"], info["PAVADINIMAS"]])
 
-# Įrašyk atnaujintas eilutes atgal į csv failą
+# Įrašyk atnaujintas eilutes atgal į csv failą be BOM
 with open(csv_path, "w", newline="", encoding="utf-8") as csvfile:
     writer = csv.writer(csvfile)
     writer.writerows(updated_rows)
