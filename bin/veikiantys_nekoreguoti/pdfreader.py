@@ -1,11 +1,29 @@
+import os
 from pathlib import Path
 import pdfplumber
 import re
 import csv
+from dotenv import load_dotenv
 
-folder_path = Path(__file__).parent.parent / "resources"
-output_csv = Path(__file__).parent.parent / "out/output.csv"
-info_txt = folder_path / "info.txt"
+load_dotenv()
+
+pdf_dir = os.environ.get("PDF_DIRECTORY")
+if not pdf_dir:
+    print("PDF_DIRECTORY is not set in .env file.")
+    exit(1)
+
+folder_path = Path(pdf_dir)
+output_csv = folder_path / "output.csv"  # Save output in the same directory
+
+info_txt_files = list(folder_path.glob("*.txt"))
+info_values = ["", "", ""]
+if info_txt_files:
+    with open(info_txt_files[0], encoding="utf-8") as f:
+        lines = f.readlines()
+        for i, line in enumerate(lines):
+            if i < 3:
+                parts = line.strip().split("=", 1)
+                info_values[i] = parts[1] if len(parts) == 2 else ""
 
 patterns = {
     "registro_nr": re.compile(r"Registro Nr\.:?\s*([^\n]+)"),
@@ -13,16 +31,6 @@ patterns = {
     "kadastro_nr": re.compile(r"pavadinimas:?\s*([^\n]+)"),
     "panaudos_gavejas": re.compile(r"Panaudos gavėjas:?\s*([^\n]+)")
 }
-
-# Read info.txt values
-info_values = ["", "", ""]
-if info_txt.exists():
-    with open(info_txt, encoding="utf-8") as f:
-        lines = f.readlines()
-        for i, line in enumerate(lines):
-            if i < 3:
-                parts = line.strip().split("=", 1)
-                info_values[i] = parts[1] if len(parts) == 2 else ""
 
 rows = []
 

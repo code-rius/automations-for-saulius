@@ -9,7 +9,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ===== Config =====
-INPUT_FILE = "out/output.csv"
+INPUT_DIR = os.environ.get("INPUT_DIRECTORY", "out")
+INPUT_FILE = os.path.join(INPUT_DIR, "output.csv")
 URL = "https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni"
 
 COOKIE = os.environ.get("RC_COOKIE", "")
@@ -45,7 +46,7 @@ def extract_address(html):
 # ===== Payload Builder =====
 def build_payload(pastaba, vardas, pavarde, gim_data):
     return {
-        "XML[uzk_parametrai][paieskos_tikslas][VALUE]": "10018",
+        "XML[uzk_parametrai][paieskos_tikslas][VALUE]": "10026",
         "page_type": "perziura",
         "XML[uzk_parametrai][paieskos_pastaba][VALUE]": pastaba,
         "XML[uzk_parametrai][asm_kodas][VALUE]": "",
@@ -59,34 +60,43 @@ def build_payload(pastaba, vardas, pavarde, gim_data):
 # ===== Main =====
 def main():
     updated_rows = []
+    cache = {}
+    request_count = 0
+
     with open(INPUT_FILE, newline="", encoding="utf-8") as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             if len(row) < 8:
-                updated_rows.append(row + ["", ""])  # jei trūksta duomenų, pridedam tuščius laukus
+                updated_rows.append(row + ["", ""])
                 continue
 
             pastaba = row[0]
             vardas = row[5]
             pavarde = row[6]
             gim_data = row[7]
+            cache_key = (vardas, pavarde, gim_data)
 
-            payload = build_payload(pastaba, vardas, pavarde, gim_data)
-            response = requests.post(URL, headers=HEADERS, data=payload)
-
-            if response.status_code == 200:
-                address, postal_code = extract_address(response.text)
+            if cache_key in cache:
+                address, postal_code = cache[cache_key]
             else:
-                address, postal_code = "", ""
+                payload = build_payload(pastaba, vardas, pavarde, gim_data)
+                response = requests.post(URL, headers=HEADERS, data=payload)
+                request_count += 1
+                if response.status_code == 200:
+                    address, postal_code = extract_address(response.text)
+                else:
+                    address, postal_code = "", ""
+                cache[cache_key] = (address, postal_code)
+                time.sleep(3)
 
             updated_rows.append(row + [address, postal_code])
-            time.sleep(3)
 
     with open(INPUT_FILE, "w", newline="", encoding="utf-8") as outcsv:
         writer = csv.writer(outcsv)
         writer.writerows(updated_rows)
 
     print(f"Failas papildytas: {INPUT_FILE}")
+    print(f"Requests made to website: {request_count}")
 
 if __name__ == "__main__":
     main()
