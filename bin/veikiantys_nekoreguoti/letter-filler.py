@@ -1,391 +1,510 @@
+"""
+Letter Generator Script
+
+This script generates customized letters based on a template document and CSV data.
+It handles proper formatting, signatures, and project-specific content.
+"""
+
 from pathlib import Path
+import csv
+import os
+import copy
+from datetime import date
+from collections import defaultdict
+
 from dotenv import load_dotenv
 from docx import Document
 from docx.shared import Pt
-import csv
-import os
-from datetime import date
-from collections import defaultdict
-import copy
-import shutil
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
 load_dotenv()
 
-def replace_placeholder_in_paragraph(paragraph, replacements):
-    """Replace placeholders in a paragraph while preserving formatting."""
-    text = paragraph.text
-    for key, value in replacements.items():
-        if key in text:
+class FormatHelper:
+    """Helper class for document text and formatting operations"""
+    
+    @staticmethod
+    def replace_text_in_paragraph(paragraph, replacements):
+        """Replace placeholders in a paragraph while preserving formatting."""
+        for key, value in replacements.items():
             for run in paragraph.runs:
                 if key in run.text:
                     run.text = run.text.replace(key, value)
+    
+    @staticmethod
+    def replace_text_in_cell(cell, replacements):
+        """Replace placeholders in a table cell while preserving formatting."""
+        for paragraph in cell.paragraphs:
+            FormatHelper.replace_text_in_paragraph(paragraph, replacements)
+    
+    @staticmethod
+    def copy_run_format(source_run, target_run):
+        """Copy formatting from one run to another."""
+        target_run.bold = source_run.bold
+        target_run.italic = source_run.italic
+        target_run.underline = source_run.underline
+        if source_run.font.size:
+            target_run.font.size = source_run.font.size
+        if source_run.font.name:
+            target_run.font.name = source_run.font.name
+        if hasattr(source_run.font, 'color') and source_run.font.color:
+            target_run.font.color.rgb = source_run.font.color.rgb
+    
+    @staticmethod
+    def copy_para_format(source_para, target_para):
+        """Copy paragraph formatting attributes from one paragraph to another."""
+        for attr in ['alignment', 'left_indent', 'right_indent', 'first_line_indent', 
+                    'line_spacing', 'space_before', 'space_after', 'keep_together', 
+                    'keep_with_next', 'page_break_before', 'widow_control']:
+            if hasattr(source_para.paragraph_format, attr):
+                setattr(target_para.paragraph_format, attr, getattr(source_para.paragraph_format, attr))
+        
+        # Copy style if available
+        if source_para.style:
+            target_para.style = source_para.style
 
-def replace_placeholder_in_cell(cell, replacements):
-    """Replace placeholders in a table cell while preserving formatting."""
-    for paragraph in cell.paragraphs:
-        replace_placeholder_in_paragraph(paragraph, replacements)
 
-def find_paragraph_with_text(doc, text_to_find):
-    """Find a paragraph containing specific text."""
-    for i, para in enumerate(doc.paragraphs):
-        if text_to_find in para.text:
-            return i
-    return -1
-
-def duplicate_paragraph(doc, para):
-    """Create a copy of a paragraph with identical formatting."""
-    new_para = doc.add_paragraph()
-    new_para.paragraph_format.alignment = para.paragraph_format.alignment
-    new_para.paragraph_format.left_indent = para.paragraph_format.left_indent
-    new_para.paragraph_format.right_indent = para.paragraph_format.right_indent
-    new_para.paragraph_format.space_before = para.paragraph_format.space_before
-    new_para.paragraph_format.space_after = para.paragraph_format.space_after
-    new_para.style = para.style
+class DocumentHelper:
+    """Helper class for document manipulation operations"""
     
-    for run in para.runs:
-        new_run = new_para.add_run(run.text)
-        new_run.bold = run.bold
-        new_run.italic = run.italic
-        new_run.underline = run.underline
-        if run.font.size:
-            new_run.font.size = run.font.size
-        new_run.font.name = run.font.name
+    @staticmethod
+    def find_paragraph_with_text(doc, text_to_find):
+        """Find a paragraph containing specific text."""
+        for i, para in enumerate(doc.paragraphs):
+            if text_to_find in para.text:
+                return i
+        return -1
     
-    return new_para
-
-def duplicate_paragraph_after(doc, paragraph, new_text=None):
-    """Create an exact copy of a paragraph and insert it directly after the original."""
-    # Create a new paragraph with same style
-    new_paragraph = doc.add_paragraph()
-    new_paragraph.style = paragraph.style
-    new_paragraph.paragraph_format.alignment = paragraph.paragraph_format.alignment
-    new_paragraph.paragraph_format.left_indent = paragraph.paragraph_format.left_indent
-    new_paragraph.paragraph_format.right_indent = paragraph.paragraph_format.right_indent
-    new_paragraph.paragraph_format.space_before = paragraph.paragraph_format.space_before
-    new_paragraph.paragraph_format.space_after = paragraph.paragraph_format.space_after
-    
-    # Copy all runs with their formatting
-    for run in paragraph.runs:
-        new_run = new_paragraph.add_run(run.text)
-        new_run.bold = run.bold
-        new_run.italic = run.italic
-        new_run.underline = run.underline
-        if run.font.size:
-            new_run.font.size = run.font.size
-        new_run.font.name = run.font.name
-    
-    # Replace text if provided
-    if new_text:
-        for key, value in new_text.items():
-            for run in new_paragraph.runs:
-                if key in run.text:
-                    run.text = run.text.replace(key, value)
-    
-    # Get paragraph index to insert after
-    for i, p in enumerate(doc.paragraphs):
-        if p == paragraph:
-            # Move the new paragraph from the end to directly after the original
-            p_element = doc._element.body
-            p_element.insert(i+1, new_paragraph._element)
+    @staticmethod
+    def set_bullet_numbering(para_with_numbering, target_para):
+        """Copy bullet points/numbering from one paragraph to another."""
+        if not hasattr(para_with_numbering, '_p') or para_with_numbering._p.pPr is None:
+            return False
+        
+        p_pr = para_with_numbering._p.pPr
+        if p_pr.numPr is None:
+            return False
+        
+        # Get the numId and ilvl from source paragraph
+        if p_pr.numPr.numId is None or p_pr.numPr.ilvl is None:
+            return False
             
-            # Remove the duplicate that was added at the end
-            doc._element.body.remove(doc.paragraphs[-1]._element)
-            
-            return doc.paragraphs[i+1]
-    
-    return new_paragraph
+        num_id = p_pr.numPr.numId.val
+        ilvl = p_pr.numPr.ilvl.val
+        
+        # Make sure target paragraph has a paragraph properties element
+        if target_para._p.pPr is None:
+            target_para._p.get_or_add_pPr()
+        
+        # Add numPr element if it doesn't exist
+        num_pr = target_para._p.pPr.get_or_add_numPr()
+        
+        # Set the numId - identifies the numbering definition
+        num_id_element = OxmlElement('w:numId')
+        num_id_element.set(qn('w:val'), str(num_id))
+        num_pr.append(num_id_element)
+        
+        # Set the ilvl - identifies the numbering level
+        ilvl_element = OxmlElement('w:ilvl')
+        ilvl_element.set(qn('w:val'), str(ilvl))
+        num_pr.append(ilvl_element)
+        
+        return True
 
-def fill_table_with_plots(doc, plots_data):
-    """Fill the table with plot data, adding rows as needed."""
-    if not doc.tables or not plots_data:
-        return
-    
-    table = doc.tables[0]
-    if len(table.rows) < 2:
-        return
-    
-    # Get the template row (second row)
-    template_row = table.rows[1]
-    
-    # Remove template row placeholder text
-    for cell in template_row.cells:
-        cell.text = ""
-    
-    # Fill in first plot data
-    if plots_data:
-        first_plot = plots_data[0]
-        template_row.cells[0].text = first_plot[0]  # Registro Nr
-        template_row.cells[1].text = first_plot[2]  # Unikalus Nr
-        template_row.cells[2].text = first_plot[3]  # Kadastro Nr
-        template_row.cells[3].text = first_plot[1]  # Sklypo adresas
-    
-    # Add additional rows for the rest of the plots
-    for plot in plots_data[1:]:
-        new_row = table.add_row()
-        new_row.cells[0].text = plot[0]  # Registro Nr
-        new_row.cells[1].text = plot[2]  # Unikalus Nr
-        new_row.cells[2].text = plot[3]  # Kadastro Nr
-        new_row.cells[3].text = plot[1]  # Sklypo adresas
 
-def insert_paragraph_after(doc, paragraph, text, replacements=None):
-    """Insert a new paragraph with given text after the reference paragraph."""
-    # Find the index of the reference paragraph
-    for i, p in enumerate(doc.paragraphs):
-        if p == paragraph:
-            # Create a new paragraph at the correct position
-            new_p = doc.add_paragraph()
+class LetterGenerator:
+    """Class responsible for letter generation and content management"""
+    
+    def __init__(self, template_path):
+        """Initialize with template document."""
+        self.template_path = template_path
+        self.template_doc = Document(template_path)
+    
+    def create_letter(self, recipient_data, plot_data, project_data, today_date):
+        """Create a customized letter based on provided data."""
+        # Create a new document from the template
+        doc = Document(self.template_path)
+        
+        # Set up replacements dictionary
+        replacements = {
+            "gavejas_1": recipient_data["name"],
+            "adresas_2": recipient_data["address"],
+            "pasto_kodas_3": recipient_data["postal_code"],
+            "proj_data": today_date
+        }
+        
+        # Apply replacements to document text
+        self._apply_replacements(doc, replacements)
+        
+        # Fill table with plot data
+        self._fill_table_with_plots(doc, plot_data)
+        
+        # Add project descriptions
+        self._add_project_descriptions(doc, project_data)
+        
+        # Add attestation paragraphs
+        self._add_attestation_paragraphs(doc, project_data)
+        
+        # Copy signature and add email
+        self._add_signature_content(doc)
+        self._ensure_email_in_document(doc, "domantas.aleknavicius@etprojektai.eu")
+        
+        return doc
+        
+    def _apply_replacements(self, doc, replacements):
+        """Apply text replacements throughout the document."""
+        # Replace in paragraphs
+        for para in doc.paragraphs:
+            FormatHelper.replace_text_in_paragraph(para, replacements)
+        
+        # Replace in tables
+        for table in doc.tables:
+            for row in table.rows:
+                for cell in row.cells:
+                    FormatHelper.replace_text_in_cell(cell, replacements)
+    
+    def _fill_table_with_plots(self, doc, plots_data):
+        """Fill the table with plot data, adding rows as needed."""
+        if not doc.tables or not plots_data:
+            return
+        
+        table = doc.tables[0]
+        if len(table.rows) < 2:
+            return
+        
+        # Get the template row (second row)
+        template_row = table.rows[1]
+        
+        # Clear template row
+        for cell in template_row.cells:
+            cell.text = ""
+        
+        # Fill in first plot data
+        if plots_data:
+            first_plot = plots_data[0]
+            template_row.cells[0].text = first_plot[0]  # Registro Nr
+            template_row.cells[1].text = first_plot[2]  # Unikalus Nr
+            template_row.cells[2].text = first_plot[3]  # Kadastro Nr
+            template_row.cells[3].text = first_plot[1]  # Sklypo adresas
+        
+        # Add additional rows for the rest of the plots
+        for plot in plots_data[1:]:
+            new_row = table.add_row()
+            new_row.cells[0].text = plot[0]  # Registro Nr
+            new_row.cells[1].text = plot[2]  # Unikalus Nr
+            new_row.cells[2].text = plot[3]  # Kadastro Nr
+            new_row.cells[3].text = plot[1]  # Sklypo adresas
+    
+    def _add_project_descriptions(self, doc, project_data):
+        """Add project descriptions to the document."""
+        if not project_data:
+            return
             
-            # Copy style and formatting from the reference paragraph
-            new_p.style = paragraph.style
-            new_p.paragraph_format.alignment = paragraph.paragraph_format.alignment
-            new_p.paragraph_format.left_indent = paragraph.paragraph_format.left_indent
-            new_p.paragraph_format.right_indent = paragraph.paragraph_format.right_indent
-            new_p.paragraph_format.space_before = paragraph.paragraph_format.space_before
-            new_p.paragraph_format.space_after = paragraph.paragraph_format.space_after
+        # Find paragraphs containing key placeholders
+        proj_pav_para_index = DocumentHelper.find_paragraph_with_text(doc, "proj_pav_5")
+        elektrine_para_index = DocumentHelper.find_paragraph_with_text(doc, "elektrines_numeris_11")
+        
+        if proj_pav_para_index < 0 or elektrine_para_index < 0:
+            return
             
-            # Add the text with proper formatting by copying runs from the reference
-            if len(paragraph.runs) > 0:
-                # First run formatting (usually contains the opening quote)
-                first_run = new_p.add_run(paragraph.runs[0].text)
-                first_run.bold = paragraph.runs[0].bold
-                first_run.italic = paragraph.runs[0].italic
-                first_run.font.name = paragraph.runs[0].font.name
-                if paragraph.runs[0].font.size:
-                    first_run.font.size = paragraph.runs[0].font.size
-                
-                # Main content with replacements
-                main_text = text
-                if replacements:
-                    for key, value in replacements.items():
-                        main_text = main_text.replace(key, value)
-                
-                # Main run formatting (content)
-                if len(paragraph.runs) > 1:
-                    main_run = new_p.add_run(main_text)
-                    main_run.bold = paragraph.runs[1].bold
-                    main_run.italic = paragraph.runs[1].italic
-                    main_run.font.name = paragraph.runs[1].font.name
-                    if paragraph.runs[1].font.size:
-                        main_run.font.size = paragraph.runs[1].font.size
-                
-                # Last run formatting (usually contains the closing quote and semicolon)
-                if len(paragraph.runs) > 2:
-                    last_run = new_p.add_run(paragraph.runs[2].text)
-                    last_run.bold = paragraph.runs[2].bold
-                    last_run.italic = paragraph.runs[2].italic
-                    last_run.font.name = paragraph.runs[2].font.name
-                    if paragraph.runs[2].font.size:
-                        last_run.font.size = paragraph.runs[2].font.size
-            else:
-                # Fallback if no runs in reference paragraph
-                new_p.text = text
-                if replacements:
-                    for key, value in replacements.items():
-                        new_p.text = new_p.text.replace(key, value)
+        proj_pav_para = doc.paragraphs[proj_pav_para_index]
+        elektrine_para = doc.paragraphs[elektrine_para_index]
+        
+        # Process first project
+        first_elektrine_nr, first_project_info = next(iter(project_data.items()))
+        
+        # Replace placeholders in original paragraphs
+        for run in proj_pav_para.runs:
+            if "proj_pav_5" in run.text:
+                run.text = run.text.replace("proj_pav_5", first_project_info["projekt_pav"])
+        
+        for run in elektrine_para.runs:
+            if "elektrines_numeris_11" in run.text:
+                run.text = run.text.replace("elektrines_numeris_11", first_elektrine_nr)
+        
+        # Skip the first project as we've already processed it
+        project_items = list(project_data.items())
+        if len(project_items) <= 1:
+            return
             
-            # Move the paragraph to the correct position (right after the reference paragraph)
-            doc._body._element.insert(i+1, new_p._element)
-            # Remove it from the end where it was initially added
+        # Process additional projects
+        index_for_proj = proj_pav_para_index + 1
+        
+        for elektrine_nr, project_info in project_items[1:]:
+            # Create a new project paragraph
+            new_para = self._create_project_paragraph(doc, proj_pav_para, elektrine_nr)
+            
+            # Insert at the correct position and remove from end
+            doc._body._element.insert(index_for_proj, new_para._element)
             doc._body._element.remove(doc.paragraphs[-1]._element)
             
-            # Return the newly inserted paragraph
-            return doc.paragraphs[i+1]
+            # Update index for next insertion
+            index_for_proj += 1
     
-    return None
-
-def copy_signature_content(template_doc, target_doc):
-    """Copy the signature and footer content from template to target document"""
-    # Find the "Pridedama:" paragraph in both documents
-    pridedama_idx_template = find_paragraph_with_text(template_doc, "Pridedama:")
-    pridedama_idx_target = find_paragraph_with_text(target_doc, "Pridedama:")
-    
-    if pridedama_idx_template < 0 or pridedama_idx_target < 0:
-        print("Warning: Could not find 'Pridedama:' in documents")
-        return False
-    
-    # Find the last attestation paragraph in target document
-    last_attestation_idx = -1
-    for i, para in enumerate(target_doc.paragraphs):
-        if "Skelbimas apie" in para.text and i > pridedama_idx_target:
-            last_attestation_idx = i
-    
-    if last_attestation_idx < 0:
-        print("Warning: Could not find attestation paragraphs in target document")
-        return False
-    
-    # Find "Pagarbiai," paragraph in template
-    pagarbiai_idx_template = -1
-    for i, para in enumerate(template_doc.paragraphs):
-        if "Pagarbiai" in para.text:
-            pagarbiai_idx_template = i
-            break
-    
-    if pagarbiai_idx_template < 0:
-        print("Warning: Could not find 'Pagarbiai,' in template document")
-        return False
-    
-    # Extract the email address and any other signature content
-    email_text = ""
-    for para in template_doc.paragraphs:
-        if "El. p.:" in para.text:
-            email_text = para.text
-            break
-    
-    # Add blank paragraphs after the last attestation for spacing
-    target_doc.add_paragraph()
-    target_doc.add_paragraph()
-    
-    # Get signature paragraphs from the template
-    signature_paras = template_doc.paragraphs[pagarbiai_idx_template:]
-    
-    # Add signature paragraphs to the target document with exact formatting
-    for para in signature_paras:
-        # Create new paragraph
-        new_para = target_doc.add_paragraph()
+    def _create_project_paragraph(self, doc, template_para, elektrine_nr):
+        """Create a formatted project paragraph."""
+        new_para = doc.add_paragraph()
+        FormatHelper.copy_para_format(template_para, new_para)
         
-        # Copy paragraph formatting exactly
-        for attr in ['alignment', 'left_indent', 'right_indent', 'first_line_indent', 
-                     'line_spacing', 'space_before', 'space_after', 'keep_together', 
-                     'keep_with_next', 'page_break_before', 'widow_control']:
-            if hasattr(para.paragraph_format, attr):
-                setattr(new_para.paragraph_format, attr, getattr(para.paragraph_format, attr))
+        # Add opening quote
+        quote_open = new_para.add_run("„")
+        quote_open.font.name = "Arial"
+        quote_open.font.size = Pt(11)
         
-        # Apply style if available
-        if para.style:
-            new_para.style = para.style
+        # Add content
+        content = f"Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, statybos projektas"
+        content_run = new_para.add_run(content)
+        content_run.font.name = "Arial"
+        content_run.font.size = Pt(11)
         
-        # Handle special case for email address
-        if "El. p.:" in para.text:
-            # Add complete email address with all runs
+        # Add closing quote
+        quote_close = new_para.add_run("\";")
+        quote_close.font.name = "Arial"
+        quote_close.font.size = Pt(11)
+        
+        return new_para
+    
+    def _add_attestation_paragraphs(self, doc, project_data):
+        """Add attestation paragraphs to the document."""
+        # Find the "Pridedama:" paragraph
+        pridedama_index = DocumentHelper.find_paragraph_with_text(doc, "Pridedama:")
+        if pridedama_index < 0:
+            return
+            
+        # Find the first attestation paragraph to use as template
+        first_attestation_para = None
+        attestation_index = None
+        
+        for i, para in enumerate(doc.paragraphs):
+            if i > pridedama_index and "Skelbimas apie" in para.text:
+                first_attestation_para = para
+                attestation_index = i + 1
+                break
+        
+        if not first_attestation_para or attestation_index is None:
+            return
+            
+        # Skip the first project as its attestation paragraph is already in the template
+        project_items = list(project_data.items())
+        if len(project_items) <= 1:
+            return
+            
+        # Add attestation paragraphs for additional projects
+        for elektrine_nr, project_info in project_items[1:]:
+            # Create a new attestation paragraph
+            new_attestation = self._create_attestation_paragraph(doc, first_attestation_para, elektrine_nr)
+            
+            # Insert at the correct position and remove from end
+            doc._body._element.insert(attestation_index, new_attestation._element)
+            doc._body._element.remove(doc.paragraphs[-1]._element)
+            
+            # Update index for next insertion
+            attestation_index += 1
+    
+    def _create_attestation_paragraph(self, doc, template_para, elektrine_nr):
+        """Create a formatted attestation paragraph."""
+        new_para = doc.add_paragraph()
+        FormatHelper.copy_para_format(template_para, new_para)
+        
+        # Copy bullet points/numbering
+        DocumentHelper.set_bullet_numbering(template_para, new_para)
+        
+        # Add content with Arial 11pt
+        text = f"Skelbimas apie energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, projektinių pasiūlymų viešinimą (2 lapai);"
+        run = new_para.add_run(text)
+        run.font.name = "Arial"
+        run.font.size = Pt(11)
+        
+        return new_para
+    
+    def _add_signature_content(self, doc):
+        """Copy the signature content from template to the document."""
+        # Find the "Pagarbiai," paragraph in template
+        pagarbiai_idx_template = DocumentHelper.find_paragraph_with_text(self.template_doc, "Pagarbiai")
+        if pagarbiai_idx_template < 0:
+            return False
+        
+        # Find the last attestation paragraph in target document
+        last_attestation_idx = -1
+        pridedama_idx = DocumentHelper.find_paragraph_with_text(doc, "Pridedama:")
+        
+        if pridedama_idx >= 0:
+            for i, para in enumerate(doc.paragraphs):
+                if "Skelbimas apie" in para.text and i > pridedama_idx:
+                    last_attestation_idx = i
+        
+        # Add spacing after attestations
+        if last_attestation_idx >= 0:
+            doc.add_paragraph()
+            doc.add_paragraph()
+        
+        # Get signature paragraphs from template
+        signature_paras = self.template_doc.paragraphs[pagarbiai_idx_template:]
+        
+        # Add signature paragraphs with exact formatting
+        for para in signature_paras:
+            new_para = doc.add_paragraph()
+            FormatHelper.copy_para_format(para, new_para)
+            
             for run in para.runs:
                 new_run = new_para.add_run(run.text)
-                new_run.bold = run.bold
-                new_run.italic = run.italic
-                new_run.underline = run.underline
-                if run.font.size:
-                    new_run.font.size = run.font.size
-                if run.font.name:
-                    new_run.font.name = run.font.name
-                # Add additional formatting if needed
-                if hasattr(run.font, 'color'):
-                    new_run.font.color.rgb = run.font.color.rgb
-        else:
-            # Copy all runs with their formatting for other paragraphs
-            for run in para.runs:
-                new_run = new_para.add_run(run.text)
-                new_run.bold = run.bold
-                new_run.italic = run.italic
-                new_run.underline = run.underline
-                if run.font.size:
-                    new_run.font.size = run.font.size
-                if run.font.name:
-                    new_run.font.name = run.font.name
-                # Add additional formatting if needed
-                if hasattr(run.font, 'color'):
-                    new_run.font.color.rgb = run.font.color.rgb
-    
-    # Now copy the drawings from the template document to the target document
-    try:
-        # Access the document part to find drawings
-        template_doc_part = template_doc._part
+                FormatHelper.copy_run_format(run, new_run)
         
-        if hasattr(template_doc_part, '_element'):
-            # Find all drawing objects using XPath
+        # Copy drawings from template to target document
+        self._copy_drawing_objects(doc)
+        
+        return True
+    
+    def _copy_drawing_objects(self, doc):
+        """Copy drawing objects from template to target document."""
+        try:
+            # Access template document part to find drawings
+            template_doc_part = self.template_doc._part
+            
+            if not hasattr(template_doc_part, '_element'):
+                return
+                
+            # Find all drawing objects
             drawings = template_doc_part._element.xpath('.//w:drawing')
-            if drawings:
-                print(f"Found {len(drawings)} drawing objects in template document")
+            if not drawings:
+                return
                 
-                # Find the appropriate paragraph in the target document (usually the "Pagarbiai," paragraph)
-                pagarbiai_idx_target = -1
-                for i, para in enumerate(target_doc.paragraphs):
-                    if "Pagarbiai" in para.text:
-                        pagarbiai_idx_target = i
-                        break
+            # Find the "Pagarbiai," paragraph in target document
+            pagarbiai_idx_target = DocumentHelper.find_paragraph_with_text(doc, "Pagarbiai")
+            if pagarbiai_idx_target < 0:
+                return
                 
-                if pagarbiai_idx_target >= 0:
-                    target_para = target_doc.paragraphs[pagarbiai_idx_target]._p
-                    
-                    # Clone and insert each drawing
-                    for drawing in drawings:
-                        drawing_copy = copy.deepcopy(drawing)
-                        target_para.append(drawing_copy)
-                        print(f"Inserted drawing into target document")
-    except Exception as e:
-        print(f"Error copying drawing objects: {e}")
+            # Get the paragraph element
+            target_para = doc.paragraphs[pagarbiai_idx_target]._p
+            
+            # Clone and insert each drawing
+            for drawing in drawings:
+                drawing_copy = copy.deepcopy(drawing)
+                target_para.append(drawing_copy)
+                
+        except Exception as e:
+            print(f"Error copying drawing objects: {e}")
     
-    return True
-
-def ensure_email_in_document(doc, email_address="domantas.aleknavicius@etprojektai.eu"):
-    """Ensures the email address is properly set in the document with Arial 11pt font"""
-    # Find the email paragraph
-    email_para_idx = -1
-    for i, para in enumerate(doc.paragraphs):
-        if "El. p.:" in para.text:
-            email_para_idx = i
-            break
-    
-    # If found, make sure it has the full email text with proper formatting
-    if email_para_idx >= 0:
-        email_para = doc.paragraphs[email_para_idx]
-        
-        # Check if we need to add or fix the email address
-        if email_address not in email_para.text:
-            # Clear the paragraph and rebuild it with proper formatting
-            for run in list(email_para.runs):
-                run.clear()
-            
-            # Add "El. p.:" label with original formatting
-            label_run = email_para.add_run("El. p.:")
-            label_run.font.name = "Arial"
-            label_run.font.size = Pt(11)
-            
-            # Add email address with Arial 11pt
-            email_run = email_para.add_run(" " + email_address)
-            email_run.font.name = "Arial"
-            email_run.font.size = Pt(11)
-        else:
-            # Email exists but might have wrong formatting - fix it
-            has_correct_formatting = False
-            
-            # Check if any run containing the email has the right formatting
-            for run in email_para.runs:
-                if email_address in run.text:
-                    run.font.name = "Arial"
-                    run.font.size = Pt(11)
-                    has_correct_formatting = True
-            
-            if not has_correct_formatting:
-                # Clear and rebuild with proper formatting
-                text = email_para.text
-                for run in list(email_para.runs):
+    def _ensure_email_in_document(self, doc, email_address="domantas.aleknavicius@etprojektai.eu"):
+        """Ensure the email address is properly set in the document."""
+        for i, para in enumerate(doc.paragraphs):
+            if "El. p.:" in para.text:
+                # Clear and rebuild the paragraph
+                for run in list(para.runs):
                     run.clear()
                 
-                # Split into label and email parts
-                if ":" in text:
-                    parts = text.split(":", 1)
-                    label_run = email_para.add_run(parts[0] + ":")
-                    label_run.font.name = "Arial"
-                    label_run.font.size = Pt(11)
-                    
-                    email_run = email_para.add_run(parts[1])
-                    email_run.font.name = "Arial"
-                    email_run.font.size = Pt(11)
-                else:
-                    # Fallback in case something weird happened with formatting
-                    label_run = email_para.add_run("El. p.:")
-                    label_run.font.name = "Arial"
-                    label_run.font.size = Pt(11)
-                    
-                    email_run = email_para.add_run(" " + email_address)
-                    email_run.font.name = "Arial"
-                    email_run.font.size = Pt(11)
+                # Add label and email with Arial 11pt
+                label_run = para.add_run("El. p.:")
+                label_run.font.name = "Arial"
+                label_run.font.size = Pt(11)
+                
+                email_run = para.add_run(" " + email_address)
+                email_run.font.name = "Arial"
+                email_run.font.size = Pt(11)
+                
+                return True
+        
+        return False
+
+
+class CsvProcessor:
+    """Class for processing CSV data into structured information for letters."""
     
-    return True
+    def __init__(self, csv_path):
+        """Initialize with CSV file path."""
+        self.csv_path = csv_path
+        
+    def read_data(self):
+        """Read and process CSV data into individuals with their plots and projects."""
+        # Detect delimiter
+        with open(self.csv_path, "r", encoding="utf-8-sig") as f:
+            sample = f.read(4096)
+            dialect = csv.Sniffer().sniff(sample)
+            delimiter = dialect.delimiter
+        
+        # Read CSV data
+        with open(self.csv_path, "r", encoding="utf-8-sig") as f:
+            reader = csv.reader(f, delimiter=delimiter)
+            header = next(reader)  # Skip header row
+            rows = list(reader)
+            
+        # Group by individual
+        individuals = defaultdict(list)
+        
+        for row in rows:
+            if len(row) < 9:  # Need at least through the Tipas column
+                continue
+                
+            tipas = row[8].lower()
+            
+            if tipas == "fizinis":
+                # For individuals: combine first name and last name
+                vardas = row[5]
+                pavarde = row[6]
+                id_or_date = row[7]
+                individual_key = (vardas, pavarde, id_or_date)
+            elif tipas == "juridinis":
+                # For companies: use only the company name
+                vardas = row[5]
+                pavarde = ""
+                id_or_date = row[7]
+                individual_key = (vardas, "", id_or_date)
+            else:
+                continue
+                
+            individuals[individual_key].append(row)
+            
+        return individuals
+        
+    def process_individual(self, individual_key, individual_rows):
+        """Process data for a single individual."""
+        vardas, pavarde, id_or_date = individual_key
+        tipas = individual_rows[0][8].lower()
+        
+        # Skip if all entries have no address
+        if all(len(row) <= 12 or not row[12] for row in individual_rows):
+            return None
+            
+        # Get the first row with an address
+        address_row = next((row for row in individual_rows if len(row) > 12 and row[12]), None)
+        if not address_row:
+            return None
+            
+        # Create recipient data
+        recipient_data = {
+            "name": f"{vardas} {pavarde}" if tipas == "fizinis" else vardas,
+            "address": address_row[12],
+            "postal_code": address_row[13] if len(address_row) > 13 and address_row[13] else ""
+        }
+        
+        # Collect unique projects and plot data
+        projects = {}
+        plots = set()
+        
+        for row in individual_rows:
+            # Clean up the elektrine_nr 
+            elektrine_nr = row[9].strip().replace('\ufeff', '')
+            
+            # Only add unique projects
+            if elektrine_nr not in projects:
+                projects[elektrine_nr] = {
+                    "projekt_nr": row[10],
+                    "projekt_pav": row[11]
+                }
+            
+            # Add unique plots
+            plot_tuple = (row[0], row[1], row[2], row[3])
+            plots.add(plot_tuple)
+            
+        return {
+            "recipient": recipient_data,
+            "projects": projects,
+            "plots": list(plots)
+        }
+
 
 def main():
-    # Get directories and filenames from environment variables
+    # Load environment variables
     etapas_dir = os.environ.get("DIR_ETAPAS")
     template_filename = os.environ.get("TEMPLATE_FILE_NAME")
     csv_filename = os.environ.get("ETAPAS_OUTPUT_FILE_NAME", "aggregated_output.csv")
@@ -399,306 +518,62 @@ def main():
     csv_path = etapas_path / csv_filename
     
     # Check if files exist
-    if not template_path.exists():
-        print(f"Template file not found: {template_path}")
-        exit(1)
-    
-    if not csv_path.exists():
-        print(f"CSV file not found: {csv_path}")
+    if not template_path.exists() or not csv_path.exists():
+        print(f"Error: Required files not found.")
+        print(f"Template: {template_path} - {'Exists' if template_path.exists() else 'Missing'}")
+        print(f"CSV: {csv_path} - {'Exists' if csv_path.exists() else 'Missing'}")
         exit(1)
     
     print(f"Using template: {template_path}")
     print(f"Reading data from: {csv_path}")
     
-    # Create output folder for documents
+    # Create output folder
     output_folder = etapas_path / "letters"
     output_folder.mkdir(exist_ok=True)
     
-    # Read the first few bytes to check for delimiter
-    with open(csv_path, "r", encoding="utf-8-sig") as f:
-        sample = f.read(4096)
-        dialect = csv.Sniffer().sniff(sample)
-        delimiter = dialect.delimiter
-    
-    print(f"Detected delimiter: '{delimiter}'")
-    
-    # Read all rows from CSV with detected delimiter
-    with open(csv_path, "r", encoding="utf-8-sig") as f:
-        reader = csv.reader(f, delimiter=delimiter)
-        header = next(reader)  # Skip header row
-        rows = list(reader)
-    
-    print(f"Found {len(rows)} rows in the CSV file")
-    
-    # Get today's date in YYYY-MM-DD format
+    # Get today's date
     today_date = date.today().strftime("%Y-%m-%d")
     
-    # Group rows by unique individual (Vardas, Pavardė, ĮK/Data)
-    individuals = defaultdict(list)
+    # Initialize processors
+    csv_processor = CsvProcessor(csv_path)
+    letter_generator = LetterGenerator(template_path)
     
-    for row in rows:
-        if len(row) < 9:  # Need at least through the Tipas column
-            continue
-        
-        tipas = row[8].lower()
-        
-        if tipas == "fizinis":
-            # For individuals: combine first name and last name
-            vardas = row[5]
-            pavarde = row[6]
-            id_or_date = row[7]
-            individual_key = (vardas, pavarde, id_or_date)
-        elif tipas == "juridinis":
-            # For companies: use only the company name
-            vardas = row[5]
-            pavarde = ""
-            id_or_date = row[7]
-            individual_key = (vardas, "", id_or_date)
-        else:
-            continue
-            
-        individuals[individual_key].append(row)
-    
+    # Read individual data
+    individuals = csv_processor.read_data()
     print(f"Found {len(individuals)} unique individuals/companies")
     
-    # Load the template document once for signature extraction
-    template_doc = Document(template_path)
-    
-    # Process each unique individual
+    # Process each individual
     processed_count = 0
     
     for individual_key, individual_rows in individuals.items():
-        vardas, pavarde, id_or_date = individual_key
-        tipas = individual_rows[0][8].lower()
+        vardas, pavarde, _ = individual_key
         
-        # Skip if all entries have no address
-        if all(len(row) <= 12 or not row[12] for row in individual_rows):
-            print(f"Skipping {vardas} {pavarde} - no address information")
-            continue
-        
-        # Get the first row with an address
-        address_row = next((row for row in individual_rows if len(row) > 12 and row[12]), None)
-        if not address_row:
+        # Process data for this individual
+        data = csv_processor.process_individual(individual_key, individual_rows)
+        if not data:
+            print(f"Skipping {vardas} {pavarde} - insufficient data")
             continue
             
-        # Create recipient name based on type
-        if tipas == "fizinis":
-            gavejas_1 = f"{vardas} {pavarde}"
-        else:
-            gavejas_1 = vardas
-            
-        # Get address info from the first row with address
-        adresas_2 = address_row[12]
-        pasto_kodas_3 = address_row[13] if len(address_row) > 13 and address_row[13] else ""
+        # Create document
+        doc = letter_generator.create_letter(
+            data["recipient"],
+            data["plots"],
+            data["projects"],
+            today_date
+        )
         
-        # Collect unique projects and plot data
-        unique_projects = {}
-        unique_plots = set()
-        
-        for row in individual_rows:
-            # Clean up the elektrine_nr to remove any BOM characters or whitespace
-            elektrine_nr = row[9].strip().replace('\ufeff', '')
-            
-            # Only add unique projects
-            if elektrine_nr not in unique_projects:
-                unique_projects[elektrine_nr] = {
-                    "projekt_nr": row[10],
-                    "projekt_pav": row[11]
-                }
-            
-            # Add unique plots (registro_nr, sklypo_adresas, unikalus_nr, kadastro_nr)
-            plot_tuple = (row[0], row[1], row[2], row[3])
-            unique_plots.add(plot_tuple)
-        
-        # Convert plots to a list for easier handling
-        plot_list = list(unique_plots)
-        
-        # Common replacements for all projects
-        base_replacements = {
-            "gavejas_1": gavejas_1,
-            "adresas_2": adresas_2,
-            "pasto_kodas_3": pasto_kodas_3,
-            "proj_data": today_date
-        }
-        
-        # Create a new document from the template
-        doc = Document(template_path)
-        
-        # Replace basic info in the document
-        for para in doc.paragraphs:
-            replace_placeholder_in_paragraph(para, base_replacements)
-        
-        # Replace in tables
-        for table in doc.tables:
-            for row_table in table.rows:
-                for cell in row_table.cells:
-                    replace_placeholder_in_cell(cell, base_replacements)
-        
-        # Fill the table with plot data
-        fill_table_with_plots(doc, plot_list)
-        
-        # Find paragraphs containing key placeholders
-        proj_pav_para_index = find_paragraph_with_text(doc, "proj_pav_5")
-        elektrine_para_index = find_paragraph_with_text(doc, "elektrines_numeris_11")
-        
-        # Handle project descriptions and attestation paragraphs
-        if proj_pav_para_index >= 0 and elektrine_para_index >= 0:
-            proj_pav_para = doc.paragraphs[proj_pav_para_index]
-            elektrine_para = doc.paragraphs[elektrine_para_index]
-            
-            # Get ordered list of projects
-            project_list = list(unique_projects.items())
-            
-            if project_list:
-                # Process first project by replacing in original paragraphs
-                first_elektrine_nr, first_project_info = project_list[0]
-                first_project_text = first_project_info["projekt_pav"]
-                
-                # Replace placeholders in original paragraphs
-                for run in proj_pav_para.runs:
-                    if "proj_pav_5" in run.text:
-                        run.text = run.text.replace("proj_pav_5", first_project_text)
-                
-                for run in elektrine_para.runs:
-                    if "elektrines_numeris_11" in run.text:
-                        run.text = run.text.replace("elektrines_numeris_11", first_elektrine_nr)
-                
-                # Process additional projects
-                index_for_proj = proj_pav_para_index + 1
-                
-                for elektrine_nr, project_info in project_list[1:]:
-                    # Create a simpler paragraph with proper indentation
-                    new_proj_para = doc.add_paragraph()
-                    new_proj_para.style = proj_pav_para.style
-                    new_proj_para.paragraph_format.alignment = proj_pav_para.paragraph_format.alignment
-                    new_proj_para.paragraph_format.left_indent = proj_pav_para.paragraph_format.left_indent
-                    new_proj_para.paragraph_format.right_indent = proj_pav_para.paragraph_format.right_indent
-                    new_proj_para.paragraph_format.space_before = proj_pav_para.paragraph_format.space_before
-                    new_proj_para.paragraph_format.space_after = proj_pav_para.paragraph_format.space_after
-                    new_proj_para.paragraph_format.first_line_indent = proj_pav_para.paragraph_format.first_line_indent
-                    
-                    # Use just 3 runs for consistent formatting
-                    quote_open = new_proj_para.add_run("„")
-                    if len(proj_pav_para.runs) > 0:
-                        quote_open.font.name = "Arial"  # Explicitly set to Arial
-                        quote_open.font.size = Pt(11)   # Set size to 11pt
-                        quote_open.bold = proj_pav_para.runs[0].bold
-                        quote_open.italic = proj_pav_para.runs[0].italic
-                    
-                    # Simplified content with just the elektrine number (not the full path)
-                    content = f"Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, statybos projektas"
-                    content_run = new_proj_para.add_run(content)
-                    if len(proj_pav_para.runs) > 1:
-                        content_run.font.name = "Arial"  # Explicitly set to Arial
-                        content_run.font.size = Pt(11)   # Set size to 11pt
-                        content_run.bold = proj_pav_para.runs[1].bold
-                        content_run.italic = proj_pav_para.runs[1].italic
-                    
-                    quote_close = new_proj_para.add_run("\";")
-                    if len(proj_pav_para.runs) > 2:
-                        quote_close.font.name = "Arial"  # Explicitly set to Arial
-                        quote_close.font.size = Pt(11)   # Set size to 11pt
-                        quote_close.bold = proj_pav_para.runs[2].bold
-                        quote_close.italic = proj_pav_para.runs[2].italic
-                    
-                    # Insert at the correct position
-                    doc._body._element.insert(index_for_proj, new_proj_para._element)
-                    # Remove from end
-                    doc._body._element.remove(doc.paragraphs[-1]._element)
-                    
-                    # Update index for next insertion
-                    index_for_proj += 1
-                
-                # Now add attestation paragraphs after "Pridedama:" with proper bullet points
-                pridedama_index = -1
-                for i, para in enumerate(doc.paragraphs):
-                    if para.text.strip() == "Pridedama:":
-                        pridedama_index = i
-                        break
-                
-                if pridedama_index > 0:
-                    # Get the style and formatting from the first attestation paragraph
-                    for i, para in enumerate(doc.paragraphs):
-                        if i > pridedama_index and "Skelbimas apie" in para.text:
-                            first_attestation_para = para
-                            attestation_index = i + 1
-                            break
-                    else:
-                        # If not found, use defaults
-                        first_attestation_para = elektrine_para
-                        attestation_index = pridedama_index + 1
-                    
-                    # Add attestation paragraphs for additional projects
-                    for elektrine_nr, project_info in project_list[1:]:
-                        # Create new attestation paragraph with bullet point
-                        new_attestation = doc.add_paragraph()
-                        new_attestation.style = first_attestation_para.style
-                        new_attestation.paragraph_format.alignment = first_attestation_para.paragraph_format.alignment
-                        new_attestation.paragraph_format.left_indent = first_attestation_para.paragraph_format.left_indent
-                        new_attestation.paragraph_format.right_indent = first_attestation_para.paragraph_format.right_indent
-                        new_attestation.paragraph_format.space_before = first_attestation_para.paragraph_format.space_before
-                        new_attestation.paragraph_format.space_after = first_attestation_para.paragraph_format.space_after
-                        new_attestation.paragraph_format.first_line_indent = first_attestation_para.paragraph_format.first_line_indent
-                        
-                        # Copy bullet points/numbering by using the numbering reference instead of direct XML assignment
-                        if hasattr(first_attestation_para, '_p') and first_attestation_para._p.pPr is not None:
-                            p_pr = first_attestation_para._p.pPr
-                            if p_pr.numPr is not None:
-                                # Get the numId and ilvl from source paragraph
-                                if p_pr.numPr.numId is not None and p_pr.numPr.ilvl is not None:
-                                    num_id = p_pr.numPr.numId.val
-                                    ilvl = p_pr.numPr.ilvl.val
-                                    
-                                    # Apply to the new paragraph through the document's numbering part
-                                    
-                                    # Make sure paragraph has a paragraph properties element
-                                    if new_attestation._p.pPr is None:
-                                        new_attestation._p.get_or_add_pPr()
-                                    
-                                    # Add numPr element if it doesn't exist
-                                    num_pr = new_attestation._p.pPr.get_or_add_numPr()
-                                    
-                                    # Set the numId - identifies the numbering definition
-                                    num_id_element = OxmlElement('w:numId')
-                                    num_id_element.set(qn('w:val'), str(num_id))
-                                    num_pr.append(num_id_element)
-                                    
-                                    # Set the ilvl - identifies the numbering level
-                                    ilvl_element = OxmlElement('w:ilvl')
-                                    ilvl_element.set(qn('w:val'), str(ilvl))
-                                    num_pr.append(ilvl_element)
-                        
-                        # Add content with consistent formatting for attestation paragraphs
-                        text = f"Skelbimas apie energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, projektinių pasiūlymų viešinimą (2 lapai);"
-                        run = new_attestation.add_run(text)
-                        run.font.name = "Arial"  # Explicitly set to Arial
-                        run.font.size = Pt(11)   # Set size to 11pt
-                        
-                        # Insert at the correct position
-                        doc._body._element.insert(attestation_index, new_attestation._element)
-                        # Remove from end
-                        doc._body._element.remove(doc.paragraphs[-1]._element)
-                        
-                        # Update index for next insertion
-                        attestation_index += 1
-        
-        # Add the signature content (including drawings) from the template
-        copy_signature_content(template_doc, doc)
-        
-        # Make sure email address is properly set
-        ensure_email_in_document(doc, "domantas.aleknavicius@etprojektai.eu")
-        
-        # Generate a filename using the recipient name
-        safe_name = gavejas_1.replace(" ", "_").replace("/", "-").replace('"', '')
+        # Generate filename and save
+        safe_name = data["recipient"]["name"].replace(" ", "_").replace("/", "-").replace('"', '')
         output_filename = f"{safe_name}.docx"
         output_path = output_folder / output_filename
         
-        # Save the document
         doc.save(output_path)
         processed_count += 1
-        print(f"Created document: {output_filename} (with {len(unique_projects)} projects and {len(unique_plots)} plots)")
+        
+        print(f"Created document: {output_filename} (with {len(data['projects'])} projects and {len(data['plots'])} plots)")
     
     print(f"\nGenerated {processed_count} documents in: {output_folder}")
+
 
 if __name__ == "__main__":
     main()
