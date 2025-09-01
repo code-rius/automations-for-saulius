@@ -45,8 +45,8 @@ python pdfreader.py
 - Make sure `.env` is not tracked by git (see `.gitignore`).
 
 TODO:
-1. Sutvarkyti output.txt
-2. Padaryti, kad veiktu su keliomis elektrinemis is .env
-3. Agreguoti kelias keletrine i viena etapo folderi
+1. Sutvarkyti output.txt (done)
+2. Padaryti, kad veiktu su keliomis elektrinemis is .env (done)
+3. Agreguoti kelias keletrine i viena etapo folderi (done)
 4. Padaryti, kad sugeneruotu dokumentus
 5. Paziureti imoniu adreso istraukima is registru centro
