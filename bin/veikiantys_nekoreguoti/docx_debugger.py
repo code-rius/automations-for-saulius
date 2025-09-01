@@ -42,6 +42,62 @@ def print_doc_structure(doc_path):
             for col_idx, cell in enumerate(row.cells):
                 text = cell.text.replace('\n', ' ')
                 print(f"  Cell [{row_idx+1},{col_idx+1}]: {text}")
+    
+    # Print information about inline shapes (including images)
+    print("\nINLINE SHAPES:")
+    print(f"{'-'*50}")
+    try:
+        if hasattr(doc, 'inline_shapes'):
+            shapes = doc.inline_shapes
+            if shapes:
+                for i, shape in enumerate(shapes):
+                    shape_type = "Unknown"
+                    if shape.type == 1:
+                        shape_type = "Linked Picture"
+                    elif shape.type == 2:
+                        shape_type = "Embedded Picture"
+                    elif shape.type == 3:
+                        shape_type = "Chart"
+                    elif shape.type == 4:
+                        shape_type = "Smart Art"
+                    elif shape.type == 5:
+                        shape_type = "Embedded Object"
+                    
+                    width = shape.width if hasattr(shape, 'width') else "N/A"
+                    height = shape.height if hasattr(shape, 'height') else "N/A"
+                    
+                    print(f"Shape {i+1}: Type={shape_type}, Width={width}, Height={height}")
+            else:
+                print("No inline shapes found")
+    except Exception as e:
+        print(f"Error checking inline shapes: {e}")
+    
+    # Check for other types of shapes (Drawing objects)
+    print("\nDRAWING OBJECTS:")
+    print(f"{'-'*50}")
+    try:
+        # Access the document part to find drawings
+        main_document_part = doc._part
+        if hasattr(main_document_part, '_element'):
+            # Find all drawing objects using XPath
+            drawings = main_document_part._element.xpath('.//w:drawing')
+            if drawings:
+                print(f"Found {len(drawings)} drawing objects in document")
+                for i, drawing in enumerate(drawings):
+                    # Try to identify which paragraph contains this drawing
+                    para_index = "Unknown"
+                    for j, para in enumerate(doc.paragraphs):
+                        if para._p.xpath('.//w:drawing'):
+                            for draw in para._p.xpath('.//w:drawing'):
+                                if draw == drawing:
+                                    para_index = j + 1
+                                    break
+                    
+                    print(f"Drawing {i+1}: Located in paragraph approximately #{para_index}")
+            else:
+                print("No drawing objects found")
+    except Exception as e:
+        print(f"Error checking drawing objects: {e}")
 
 def main():
     # Priority 1: Command line argument

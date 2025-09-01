@@ -7,6 +7,9 @@ import os
 from datetime import date
 from collections import defaultdict
 import copy
+import shutil
+from docx.oxml.ns import qn
+from docx.oxml import OxmlElement
 
 load_dotenv()
 
@@ -192,6 +195,195 @@ def insert_paragraph_after(doc, paragraph, text, replacements=None):
     
     return None
 
+def copy_signature_content(template_doc, target_doc):
+    """Copy the signature and footer content from template to target document"""
+    # Find the "Pridedama:" paragraph in both documents
+    pridedama_idx_template = find_paragraph_with_text(template_doc, "Pridedama:")
+    pridedama_idx_target = find_paragraph_with_text(target_doc, "Pridedama:")
+    
+    if pridedama_idx_template < 0 or pridedama_idx_target < 0:
+        print("Warning: Could not find 'Pridedama:' in documents")
+        return False
+    
+    # Find the last attestation paragraph in target document
+    last_attestation_idx = -1
+    for i, para in enumerate(target_doc.paragraphs):
+        if "Skelbimas apie" in para.text and i > pridedama_idx_target:
+            last_attestation_idx = i
+    
+    if last_attestation_idx < 0:
+        print("Warning: Could not find attestation paragraphs in target document")
+        return False
+    
+    # Find "Pagarbiai," paragraph in template
+    pagarbiai_idx_template = -1
+    for i, para in enumerate(template_doc.paragraphs):
+        if "Pagarbiai" in para.text:
+            pagarbiai_idx_template = i
+            break
+    
+    if pagarbiai_idx_template < 0:
+        print("Warning: Could not find 'Pagarbiai,' in template document")
+        return False
+    
+    # Extract the email address and any other signature content
+    email_text = ""
+    for para in template_doc.paragraphs:
+        if "El. p.:" in para.text:
+            email_text = para.text
+            break
+    
+    # Add blank paragraphs after the last attestation for spacing
+    target_doc.add_paragraph()
+    target_doc.add_paragraph()
+    
+    # Get signature paragraphs from the template
+    signature_paras = template_doc.paragraphs[pagarbiai_idx_template:]
+    
+    # Add signature paragraphs to the target document with exact formatting
+    for para in signature_paras:
+        # Create new paragraph
+        new_para = target_doc.add_paragraph()
+        
+        # Copy paragraph formatting exactly
+        for attr in ['alignment', 'left_indent', 'right_indent', 'first_line_indent', 
+                     'line_spacing', 'space_before', 'space_after', 'keep_together', 
+                     'keep_with_next', 'page_break_before', 'widow_control']:
+            if hasattr(para.paragraph_format, attr):
+                setattr(new_para.paragraph_format, attr, getattr(para.paragraph_format, attr))
+        
+        # Apply style if available
+        if para.style:
+            new_para.style = para.style
+        
+        # Handle special case for email address
+        if "El. p.:" in para.text:
+            # Add complete email address with all runs
+            for run in para.runs:
+                new_run = new_para.add_run(run.text)
+                new_run.bold = run.bold
+                new_run.italic = run.italic
+                new_run.underline = run.underline
+                if run.font.size:
+                    new_run.font.size = run.font.size
+                if run.font.name:
+                    new_run.font.name = run.font.name
+                # Add additional formatting if needed
+                if hasattr(run.font, 'color'):
+                    new_run.font.color.rgb = run.font.color.rgb
+        else:
+            # Copy all runs with their formatting for other paragraphs
+            for run in para.runs:
+                new_run = new_para.add_run(run.text)
+                new_run.bold = run.bold
+                new_run.italic = run.italic
+                new_run.underline = run.underline
+                if run.font.size:
+                    new_run.font.size = run.font.size
+                if run.font.name:
+                    new_run.font.name = run.font.name
+                # Add additional formatting if needed
+                if hasattr(run.font, 'color'):
+                    new_run.font.color.rgb = run.font.color.rgb
+    
+    # Now copy the drawings from the template document to the target document
+    try:
+        # Access the document part to find drawings
+        template_doc_part = template_doc._part
+        
+        if hasattr(template_doc_part, '_element'):
+            # Find all drawing objects using XPath
+            drawings = template_doc_part._element.xpath('.//w:drawing')
+            if drawings:
+                print(f"Found {len(drawings)} drawing objects in template document")
+                
+                # Find the appropriate paragraph in the target document (usually the "Pagarbiai," paragraph)
+                pagarbiai_idx_target = -1
+                for i, para in enumerate(target_doc.paragraphs):
+                    if "Pagarbiai" in para.text:
+                        pagarbiai_idx_target = i
+                        break
+                
+                if pagarbiai_idx_target >= 0:
+                    target_para = target_doc.paragraphs[pagarbiai_idx_target]._p
+                    
+                    # Clone and insert each drawing
+                    for drawing in drawings:
+                        drawing_copy = copy.deepcopy(drawing)
+                        target_para.append(drawing_copy)
+                        print(f"Inserted drawing into target document")
+    except Exception as e:
+        print(f"Error copying drawing objects: {e}")
+    
+    return True
+
+def ensure_email_in_document(doc, email_address="domantas.aleknavicius@etprojektai.eu"):
+    """Ensures the email address is properly set in the document with Arial 11pt font"""
+    # Find the email paragraph
+    email_para_idx = -1
+    for i, para in enumerate(doc.paragraphs):
+        if "El. p.:" in para.text:
+            email_para_idx = i
+            break
+    
+    # If found, make sure it has the full email text with proper formatting
+    if email_para_idx >= 0:
+        email_para = doc.paragraphs[email_para_idx]
+        
+        # Check if we need to add or fix the email address
+        if email_address not in email_para.text:
+            # Clear the paragraph and rebuild it with proper formatting
+            for run in list(email_para.runs):
+                run.clear()
+            
+            # Add "El. p.:" label with original formatting
+            label_run = email_para.add_run("El. p.:")
+            label_run.font.name = "Arial"
+            label_run.font.size = Pt(11)
+            
+            # Add email address with Arial 11pt
+            email_run = email_para.add_run(" " + email_address)
+            email_run.font.name = "Arial"
+            email_run.font.size = Pt(11)
+        else:
+            # Email exists but might have wrong formatting - fix it
+            has_correct_formatting = False
+            
+            # Check if any run containing the email has the right formatting
+            for run in email_para.runs:
+                if email_address in run.text:
+                    run.font.name = "Arial"
+                    run.font.size = Pt(11)
+                    has_correct_formatting = True
+            
+            if not has_correct_formatting:
+                # Clear and rebuild with proper formatting
+                text = email_para.text
+                for run in list(email_para.runs):
+                    run.clear()
+                
+                # Split into label and email parts
+                if ":" in text:
+                    parts = text.split(":", 1)
+                    label_run = email_para.add_run(parts[0] + ":")
+                    label_run.font.name = "Arial"
+                    label_run.font.size = Pt(11)
+                    
+                    email_run = email_para.add_run(parts[1])
+                    email_run.font.name = "Arial"
+                    email_run.font.size = Pt(11)
+                else:
+                    # Fallback in case something weird happened with formatting
+                    label_run = email_para.add_run("El. p.:")
+                    label_run.font.name = "Arial"
+                    label_run.font.size = Pt(11)
+                    
+                    email_run = email_para.add_run(" " + email_address)
+                    email_run.font.name = "Arial"
+                    email_run.font.size = Pt(11)
+    
+    return True
+
 def main():
     # Get directories and filenames from environment variables
     etapas_dir = os.environ.get("DIR_ETAPAS")
@@ -268,6 +460,9 @@ def main():
         individuals[individual_key].append(row)
     
     print(f"Found {len(individuals)} unique individuals/companies")
+    
+    # Load the template document once for signature extraction
+    template_doc = Document(template_path)
     
     # Process each unique individual
     processed_count = 0
@@ -455,8 +650,6 @@ def main():
                                     ilvl = p_pr.numPr.ilvl.val
                                     
                                     # Apply to the new paragraph through the document's numbering part
-                                    from docx.oxml.ns import qn
-                                    from docx.oxml import OxmlElement
                                     
                                     # Make sure paragraph has a paragraph properties element
                                     if new_attestation._p.pPr is None:
@@ -488,6 +681,12 @@ def main():
                         
                         # Update index for next insertion
                         attestation_index += 1
+        
+        # Add the signature content (including drawings) from the template
+        copy_signature_content(template_doc, doc)
+        
+        # Make sure email address is properly set
+        ensure_email_in_document(doc, "domantas.aleknavicius@etprojektai.eu")
         
         # Generate a filename using the recipient name
         safe_name = gavejas_1.replace(" ", "_").replace("/", "-").replace('"', '')
