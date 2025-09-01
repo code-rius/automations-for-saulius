@@ -385,7 +385,8 @@ def main():
                     # Use just 3 runs for consistent formatting
                     quote_open = new_proj_para.add_run("„")
                     if len(proj_pav_para.runs) > 0:
-                        quote_open.font.name = proj_pav_para.runs[0].font.name
+                        quote_open.font.name = "Arial"  # Explicitly set to Arial
+                        quote_open.font.size = Pt(11)   # Set size to 11pt
                         quote_open.bold = proj_pav_para.runs[0].bold
                         quote_open.italic = proj_pav_para.runs[0].italic
                     
@@ -393,13 +394,15 @@ def main():
                     content = f"Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, statybos projektas"
                     content_run = new_proj_para.add_run(content)
                     if len(proj_pav_para.runs) > 1:
-                        content_run.font.name = proj_pav_para.runs[1].font.name
+                        content_run.font.name = "Arial"  # Explicitly set to Arial
+                        content_run.font.size = Pt(11)   # Set size to 11pt
                         content_run.bold = proj_pav_para.runs[1].bold
                         content_run.italic = proj_pav_para.runs[1].italic
                     
                     quote_close = new_proj_para.add_run("\";")
                     if len(proj_pav_para.runs) > 2:
-                        quote_close.font.name = proj_pav_para.runs[2].font.name
+                        quote_close.font.name = "Arial"  # Explicitly set to Arial
+                        quote_close.font.size = Pt(11)   # Set size to 11pt
                         quote_close.bold = proj_pav_para.runs[2].bold
                         quote_close.italic = proj_pav_para.runs[2].italic
                     
@@ -472,9 +475,11 @@ def main():
                                     ilvl_element.set(qn('w:val'), str(ilvl))
                                     num_pr.append(ilvl_element)
                         
-                        # Add content with simplified formatting
+                        # Add content with consistent formatting for attestation paragraphs
                         text = f"Skelbimas apie energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, projektinių pasiūlymų viešinimą (2 lapai);"
-                        new_attestation.add_run(text)
+                        run = new_attestation.add_run(text)
+                        run.font.name = "Arial"  # Explicitly set to Arial
+                        run.font.size = Pt(11)   # Set size to 11pt
                         
                         # Insert at the correct position
                         doc._body._element.insert(attestation_index, new_attestation._element)
