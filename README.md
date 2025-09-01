@@ -44,4 +44,9 @@ python pdfreader.py
 - `.env` is used to securely store your cookie and other environment variables.
 - Make sure `.env` is not tracked by git (see `.gitignore`).
 
-lmao
+TODO:
+1. Sutvarkyti output.txt
+2. Padaryti, kad veiktu su keliomis elektrinemis is .env
+3. Agreguoti kelias keletrine i viena etapo folderi
+4. Padaryti, kad sugeneruotu dokumentus
+5. Paziureti imoniu adreso istraukima is registru centro
