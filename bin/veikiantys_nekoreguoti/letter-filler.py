@@ -301,7 +301,8 @@ def main():
         unique_plots = set()
         
         for row in individual_rows:
-            elektrine_nr = row[9]
+            # Clean up the elektrine_nr to remove any BOM characters or whitespace
+            elektrine_nr = row[9].strip().replace('\ufeff', '')
             
             # Only add unique projects
             if elektrine_nr not in unique_projects:
@@ -350,53 +351,138 @@ def main():
             proj_pav_para = doc.paragraphs[proj_pav_para_index]
             elektrine_para = doc.paragraphs[elektrine_para_index]
             
-            # List of projects to process
+            # Get ordered list of projects
             project_list = list(unique_projects.items())
             
             if project_list:
-                # Process first project by replacing placeholders
+                # Process first project by replacing in original paragraphs
                 first_elektrine_nr, first_project_info = project_list[0]
                 first_project_text = first_project_info["projekt_pav"]
                 
-                # Replace in original paragraphs
+                # Replace placeholders in original paragraphs
                 for run in proj_pav_para.runs:
                     if "proj_pav_5" in run.text:
                         run.text = run.text.replace("proj_pav_5", first_project_text)
-                    
+                
                 for run in elektrine_para.runs:
                     if "elektrines_numeris_11" in run.text:
                         run.text = run.text.replace("elektrines_numeris_11", first_elektrine_nr)
                 
-                # Process additional projects by inserting new paragraphs directly after previous ones
-                prev_proj_para = proj_pav_para
-                prev_elektrine_para = elektrine_para
+                # Process additional projects
+                index_for_proj = proj_pav_para_index + 1
                 
-                # Extract the content template from the paragraph (without placeholders)
-                if len(proj_pav_para.runs) > 1:
-                    proj_text_template = proj_pav_para.runs[1].text.replace(first_project_text, "{proj_pav}")
-                else:
-                    proj_text_template = "Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, {location}, statybos projektas"
-                
-                if len(elektrine_para.runs) > 1:
-                    elektrine_text_template = elektrine_para.runs[1].text.replace(first_elektrine_nr, "{elektrine_nr}")
-                    if len(elektrine_para.runs) > 2 and "," in elektrine_para.runs[2].text:
-                        elektrine_text_template += elektrine_para.runs[2].text
-                else:
-                    elektrine_text_template = "Skelbimas apie energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, projektinių pasiūlymų viešinimą (2 lapai)"
-                
-                # Add additional project paragraphs
                 for elektrine_nr, project_info in project_list[1:]:
-                    project_text = project_info["projekt_pav"]
+                    # Create a simpler paragraph with proper indentation
+                    new_proj_para = doc.add_paragraph()
+                    new_proj_para.style = proj_pav_para.style
+                    new_proj_para.paragraph_format.alignment = proj_pav_para.paragraph_format.alignment
+                    new_proj_para.paragraph_format.left_indent = proj_pav_para.paragraph_format.left_indent
+                    new_proj_para.paragraph_format.right_indent = proj_pav_para.paragraph_format.right_indent
+                    new_proj_para.paragraph_format.space_before = proj_pav_para.paragraph_format.space_before
+                    new_proj_para.paragraph_format.space_after = proj_pav_para.paragraph_format.space_after
+                    new_proj_para.paragraph_format.first_line_indent = proj_pav_para.paragraph_format.first_line_indent
                     
-                    # Insert project name paragraph
-                    proj_text = proj_text_template.replace("{proj_pav}", project_text).replace("{elektrine_nr}", elektrine_nr)
-                    new_proj_para = insert_paragraph_after(doc, prev_proj_para, proj_text)
-                    prev_proj_para = new_proj_para
+                    # Use just 3 runs for consistent formatting
+                    quote_open = new_proj_para.add_run("„")
+                    if len(proj_pav_para.runs) > 0:
+                        quote_open.font.name = proj_pav_para.runs[0].font.name
+                        quote_open.bold = proj_pav_para.runs[0].bold
+                        quote_open.italic = proj_pav_para.runs[0].italic
                     
-                    # Insert attestation paragraph
-                    elektrine_text = elektrine_text_template.replace("{elektrine_nr}", elektrine_nr)
-                    new_elektrine_para = insert_paragraph_after(doc, prev_elektrine_para, elektrine_text)
-                    prev_elektrine_para = new_elektrine_para
+                    # Simplified content with just the elektrine number (not the full path)
+                    content = f"Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, statybos projektas"
+                    content_run = new_proj_para.add_run(content)
+                    if len(proj_pav_para.runs) > 1:
+                        content_run.font.name = proj_pav_para.runs[1].font.name
+                        content_run.bold = proj_pav_para.runs[1].bold
+                        content_run.italic = proj_pav_para.runs[1].italic
+                    
+                    quote_close = new_proj_para.add_run("\";")
+                    if len(proj_pav_para.runs) > 2:
+                        quote_close.font.name = proj_pav_para.runs[2].font.name
+                        quote_close.bold = proj_pav_para.runs[2].bold
+                        quote_close.italic = proj_pav_para.runs[2].italic
+                    
+                    # Insert at the correct position
+                    doc._body._element.insert(index_for_proj, new_proj_para._element)
+                    # Remove from end
+                    doc._body._element.remove(doc.paragraphs[-1]._element)
+                    
+                    # Update index for next insertion
+                    index_for_proj += 1
+                
+                # Now add attestation paragraphs after "Pridedama:" with proper bullet points
+                pridedama_index = -1
+                for i, para in enumerate(doc.paragraphs):
+                    if para.text.strip() == "Pridedama:":
+                        pridedama_index = i
+                        break
+                
+                if pridedama_index > 0:
+                    # Get the style and formatting from the first attestation paragraph
+                    for i, para in enumerate(doc.paragraphs):
+                        if i > pridedama_index and "Skelbimas apie" in para.text:
+                            first_attestation_para = para
+                            attestation_index = i + 1
+                            break
+                    else:
+                        # If not found, use defaults
+                        first_attestation_para = elektrine_para
+                        attestation_index = pridedama_index + 1
+                    
+                    # Add attestation paragraphs for additional projects
+                    for elektrine_nr, project_info in project_list[1:]:
+                        # Create new attestation paragraph with bullet point
+                        new_attestation = doc.add_paragraph()
+                        new_attestation.style = first_attestation_para.style
+                        new_attestation.paragraph_format.alignment = first_attestation_para.paragraph_format.alignment
+                        new_attestation.paragraph_format.left_indent = first_attestation_para.paragraph_format.left_indent
+                        new_attestation.paragraph_format.right_indent = first_attestation_para.paragraph_format.right_indent
+                        new_attestation.paragraph_format.space_before = first_attestation_para.paragraph_format.space_before
+                        new_attestation.paragraph_format.space_after = first_attestation_para.paragraph_format.space_after
+                        new_attestation.paragraph_format.first_line_indent = first_attestation_para.paragraph_format.first_line_indent
+                        
+                        # Copy bullet points/numbering by using the numbering reference instead of direct XML assignment
+                        if hasattr(first_attestation_para, '_p') and first_attestation_para._p.pPr is not None:
+                            p_pr = first_attestation_para._p.pPr
+                            if p_pr.numPr is not None:
+                                # Get the numId and ilvl from source paragraph
+                                if p_pr.numPr.numId is not None and p_pr.numPr.ilvl is not None:
+                                    num_id = p_pr.numPr.numId.val
+                                    ilvl = p_pr.numPr.ilvl.val
+                                    
+                                    # Apply to the new paragraph through the document's numbering part
+                                    from docx.oxml.ns import qn
+                                    from docx.oxml import OxmlElement
+                                    
+                                    # Make sure paragraph has a paragraph properties element
+                                    if new_attestation._p.pPr is None:
+                                        new_attestation._p.get_or_add_pPr()
+                                    
+                                    # Add numPr element if it doesn't exist
+                                    num_pr = new_attestation._p.pPr.get_or_add_numPr()
+                                    
+                                    # Set the numId - identifies the numbering definition
+                                    num_id_element = OxmlElement('w:numId')
+                                    num_id_element.set(qn('w:val'), str(num_id))
+                                    num_pr.append(num_id_element)
+                                    
+                                    # Set the ilvl - identifies the numbering level
+                                    ilvl_element = OxmlElement('w:ilvl')
+                                    ilvl_element.set(qn('w:val'), str(ilvl))
+                                    num_pr.append(ilvl_element)
+                        
+                        # Add content with simplified formatting
+                        text = f"Skelbimas apie energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, projektinių pasiūlymų viešinimą (2 lapai);"
+                        new_attestation.add_run(text)
+                        
+                        # Insert at the correct position
+                        doc._body._element.insert(attestation_index, new_attestation._element)
+                        # Remove from end
+                        doc._body._element.remove(doc.paragraphs[-1]._element)
+                        
+                        # Update index for next insertion
+                        attestation_index += 1
         
         # Generate a filename using the recipient name
         safe_name = gavejas_1.replace(" ", "_").replace("/", "-").replace('"', '')
