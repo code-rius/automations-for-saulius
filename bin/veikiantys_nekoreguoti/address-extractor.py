@@ -177,17 +177,19 @@ def main():
                         row[13] = postal_code
                 else:
                     row = row[:12] + [address, postal_code]
-        
+    
         updated_rows.append(row)
-    
-    if not MOCK_EXTRACTION:
-        with open(INPUT_FILE, "w", newline="", encoding="utf-8-sig") as outcsv:
-            writer = csv.writer(outcsv)
-            writer.writerows(updated_rows)
-        
-        print(f"File updated: {INPUT_FILE}")
-    
-    print(f"Requests made to website: {request_count}")
+
+    # Modified part: Always write to file, even in MOCK mode
+    with open(INPUT_FILE, "w", newline="", encoding="utf-8-sig") as outcsv:
+        writer = csv.writer(outcsv)
+        writer.writerows(updated_rows)
+
+    print(f"File updated: {INPUT_FILE}")
+    if MOCK_EXTRACTION:
+        print("MOCK MODE: File was updated with mock address values for testing.")
+    else:
+        print(f"Requests made to website: {request_count}")
     print(f"Unique individuals processed: {len(cache)}")
     print(f"Total individuals in file: {len(unique_individuals)}")
 
