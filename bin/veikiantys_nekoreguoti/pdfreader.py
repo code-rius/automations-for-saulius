@@ -240,7 +240,8 @@ def aggregate_files(etapas_dir, processed_files):
         print(f"Creating directory: {etapas_path}")
         etapas_path.mkdir(parents=True, exist_ok=True)
     
-    output_path = etapas_path / "aggregated_output.csv"
+    output_filename = os.environ.get("ETAPAS_OUTPUT_FILE_NAME", "aggregated_output.csv")
+    output_path = etapas_path / output_filename
     
     # Collect all rows and headers
     all_rows = []
