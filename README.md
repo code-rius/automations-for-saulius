@@ -48,5 +48,5 @@ TODO:
 1. Sutvarkyti output.txt (done)
 2. Padaryti, kad veiktu su keliomis elektrinemis is .env (done)
 3. Agreguoti kelias keletrine i viena etapo folderi (done)
-4. Padaryti, kad sugeneruotu dokumentus
+4. Padaryti, kad sugeneruotu dokumentus (+-done)
 5. Paziureti imoniu adreso istraukima is registru centro
