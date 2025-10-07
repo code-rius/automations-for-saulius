@@ -8,22 +8,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 def get_elektrine_directories():
-    """Get all directories listed in DIR_ELEKTRINE_X environment variables."""
+    """Get all directories listed in DIR_ELEKTRINE_X environment variables (any X)."""
     elektrine_dirs = []
-    i = 1
-    while True:
-        dir_key = f"DIR_ELEKTRINE_{i}"
-        dir_path = os.environ.get(dir_key)
-        if not dir_path:
-            break
-        elektrine_dirs.append(dir_path)
-        i += 1
-    
-    if not elektrine_dirs:
-        print("No DIR_ELEKTRINE_X entries found in .env file.")
-        exit(1)
-    
-    return elektrine_dirs
+    pattern = re.compile(r"^DIR_ELEKTRINE_(\d+)$")
+    for key, value in os.environ.items():
+        if pattern.match(key) and value:
+            elektrine_dirs.append((int(pattern.match(key).group(1)), value))
+    # Sort by number for predictable order
+    elektrine_dirs.sort()
+    return [v for k, v in elektrine_dirs]
 
 def read_info_file(folder_path):
     """Read info from a .txt file named after the folder."""
@@ -70,44 +63,72 @@ def process_role_block(lines, start_keyword, role_label, registro_nr, adresas, u
     """Process a block of text to extract people with specific roles."""
     rows = []
     for i, line in enumerate(lines):
-        if re.match(fr"{start_keyword}:?\s*", line.strip(), re.IGNORECASE):
-            first_line = line.strip()
-            name_field = re.sub(fr"{start_keyword}:?\s*", "", first_line, flags=re.IGNORECASE).strip()
-            entries_raw = [name_field]
+        # For "Kiti", match header line even if it has a prefix (e.g., "7.1."), using regex for end-of-line match
+        if (role_label == "Kiti" and re.search(rf"\b{re.escape(start_keyword)}\s*$", line, re.IGNORECASE)) or \
+           (role_label != "Kiti" and re.match(fr"{start_keyword}:?\s*", line.strip(), re.IGNORECASE)):
+            if role_label == "Kiti":
+                # Only extract the next line as entry
+                if i + 1 < len(lines):
+                    entry = lines[i + 1].strip()
+                    if entry and entry.lower() != "lietuvos respublika, a.k. 111105555".lower():
+                        if ", gim." in entry.lower():
+                            entry_type = "fizinis"
+                        elif ", a.k." in entry.lower():
+                            entry_type = "juridinis"
+                        else:
+                            entry_type = ""
+                        split_match = re.split(r",\s*(?:gim\.|a\.k\.)\s*", entry, maxsplit=1, flags=re.IGNORECASE)
+                        if len(split_match) == 2:
+                            name_clean = split_match[0].strip()
+                            id_or_date = split_match[1].strip()
+                        else:
+                            name_clean = entry
+                            id_or_date = ""
+                        first_name, surname = split_name(name_clean, entry_type)
+                        rows.append((
+                            registro_nr, adresas, unikalus_nr, kadastro_nr, role_label,
+                            first_name, surname, id_or_date, entry_type,
+                            info_values[0], info_values[1], info_values[2]
+                        ))
+            else:
+                # Original logic for other roles
+                first_line = line.strip()
+                name_field = re.sub(fr"{start_keyword}:?\s*", "", first_line, flags=re.IGNORECASE).strip()
+                entries_raw = [name_field]
 
-            for j in range(i + 1, len(lines)):
-                next_line = lines[j].strip()
-                if re.match(r".+,\s*(gim\.|a\.k\.)", next_line, re.IGNORECASE):
-                    entries_raw.append(next_line)
-                else:
-                    break
+                for j in range(i + 1, len(lines)):
+                    next_line = lines[j].strip()
+                    if re.match(r".+,\s*(gim\.|a\.k\.)", next_line, re.IGNORECASE):
+                        entries_raw.append(next_line)
+                    else:
+                        break
 
-            for entry in entries_raw:
-                if entry.lower() == "lietuvos respublika, a.k. 111105555".lower():
-                    continue
+                for entry in entries_raw:
+                    if entry.lower() == "lietuvos respublika, a.k. 111105555".lower():
+                        continue
 
-                if ", gim." in entry.lower():
-                    entry_type = "fizinis"
-                elif ", a.k." in entry.lower():
-                    entry_type = "juridinis"
-                else:
-                    entry_type = ""
+                    if ", gim." in entry.lower():
+                        entry_type = "fizinis"
+                    elif ", a.k." in entry.lower():
+                        entry_type = "juridinis"
+                    else:
+                        entry_type = ""
 
-                split_match = re.split(r",\s*(?:gim\.|a\.k\.)\s*", entry, maxsplit=1, flags=re.IGNORECASE)
-                if len(split_match) == 2:
-                    name_clean = split_match[0].strip()
-                    id_or_date = split_match[1].strip()
-                else:
-                    name_clean = entry
-                    id_or_date = ""
+                    split_match = re.split(r",\s*(?:gim\.|a\.k\.)\s*", entry, maxsplit=1, flags=re.IGNORECASE)
+                    if len(split_match) == 2:
+                        name_clean = split_match[0].strip()
+                        id_or_date = split_match[1].strip()
+                    else:
+                        name_clean = entry
+                        id_or_date = ""
 
-                first_name, surname = split_name(name_clean, entry_type)
+                    first_name, surname = split_name(name_clean, entry_type)
 
-                rows.append((
-                    registro_nr, adresas, unikalus_nr, kadastro_nr, role_label,
-                    first_name, surname, id_or_date, entry_type,
-                    info_values[0], info_values[1], info_values[2]
-                ))
+                    rows.append((
+                        registro_nr, adresas, unikalus_nr, kadastro_nr, role_label,
+                        first_name, surname, id_or_date, entry_type,
+                        info_values[0], info_values[1], info_values[2]
+                    ))
     return rows
 
 def process_pdf_file(pdf_file, patterns, info_values):
@@ -140,6 +161,12 @@ def process_pdf_file(pdf_file, patterns, info_values):
     rows.extend(process_role_block(lines, "Savininkas", "Savininkas", registro_nr, adresas, unikalus_nr, kadastro_nr, info_values))
     rows.extend(process_role_block(lines, "Nuomininkas", "Nuomininkas", registro_nr, adresas, unikalus_nr, kadastro_nr, info_values))
     rows.extend(process_role_block(lines, "Patikėtinis", "Patikėtinis", registro_nr, adresas, unikalus_nr, kadastro_nr, info_values))
+    rows.extend(process_role_block(
+        lines,
+        "Kiti juridiniai faktai, kurių registravimą numato įstatymai",
+        "Kiti",
+        registro_nr, adresas, unikalus_nr, kadastro_nr, info_values
+    ))
 
     # Process panaudos gavėjas entries
     for match in re.finditer(patterns["panaudos_gavejas"], full_text):
