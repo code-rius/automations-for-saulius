@@ -1,0 +1,412 @@
+Making request for: IRENA JUŠKEVIČIENĖ (1963-07-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/13478', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'IRENA', 'XML[uzk_parametrai][pavarde][VALUE]': 'JUŠKEVIČIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1963-07-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for IRENA JUŠKEVIČIENĖ: Kaunas, Pramonės pr. 43-5, LT-50464
+
+Making request for: JUOZAPAS STRIAUŠA (1963-07-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/13478', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JUOZAPAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'STRIAUŠA', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1963-07-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JUOZAPAS STRIAUŠA: Marijampolė, J. Ambrazevičiaus-Brazaičio g. 5-13, LT-68160
+
+Making request for: RŪTA ATKOČIŪNIENĖ (1962-05-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/13478', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'RŪTA', 'XML[uzk_parametrai][pavarde][VALUE]': 'ATKOČIŪNIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1962-05-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for RŪTA ATKOČIŪNIENĖ: Marijampolė, Kosmonautų g. 2-33, LT-68147
+
+Making request for: VILIJA LUOBIKIENĖ (1952-07-13)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/22741', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VILIJA', 'XML[uzk_parametrai][pavarde][VALUE]': 'LUOBIKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1952-07-13', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VILIJA LUOBIKIENĖ: Marijampolės sav., Sasnavos sen., Tautkaičių k., Valčiuvos g. 41, LT-68106
+
+Making request for: DARIUS KUNDRECKAS (1978-01-11)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6278', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'DARIUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'KUNDRECKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1978-01-11', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for DARIUS KUNDRECKAS: Marijampolės sav., Patašinės sen., Baraginės k., Geležinių g. 1, LT-69491
+
+Making request for: GEDIMINAS KUNDRECKAS (1954-06-25)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6291', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'GEDIMINAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'KUNDRECKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1954-06-25', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for GEDIMINAS KUNDRECKAS: Marijampolės sav., Patašinės sen., Baraginės k., Lietuva,
+
+Making request for: SALOMĖJA KUNDRECKIENĖ (1931-02-02)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6291', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'SALOMĖJA', 'XML[uzk_parametrai][pavarde][VALUE]': 'KUNDRECKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1931-02-02', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for SALOMĖJA KUNDRECKIENĖ: Marijampolė, Kosmonautų g. 19, LT-68152
+
+Making request for: ALGIS LASTAUSKAS (1974-03-27)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6301', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ALGIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'LASTAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1974-03-27', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ALGIS LASTAUSKAS: Marijampolės sav., Liudvinavo sen., Kūlokų k., Kūlokų g. 55, LT-69172
+
+Making request for: ROMAS VILIONIS (1949-02-13)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/14442', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ROMAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'VILIONIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1949-02-13', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ROMAS VILIONIS: Marijampolės sav., Sasnava, Vytauto g. 32, LT-69480
+
+Making request for: ALGIMANTAS BRONIUS JURGELEVIČIUS (1945-07-27)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/14491', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ALGIMANTAS BRONIUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'JURGELEVIČIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1945-07-27', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ALGIMANTAS BRONIUS JURGELEVIČIUS: Kaunas, Šarkuvos g. 13-43, LT-48155
+
+Making request for: JURGIS NAGINIONIS (1961-07-30)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5950', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JURGIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'NAGINIONIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-07-30', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JURGIS NAGINIONIS: Marijampolės sav., Sasnavos sen., Smilgių k., Aušros g. 7, LT-69478
+
+Making request for: LEVA NAGINIONIENĖ (1963-08-26)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5950', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LEVA', 'XML[uzk_parametrai][pavarde][VALUE]': 'NAGINIONIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1963-08-26', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LEVA NAGINIONIENĖ: Marijampolės sav., Sasnavos sen., Smilgių k., Aušros g. 7, LT-69478
+
+Making request for: JUOZAS VAITKEVIČIUS (1943-03-19)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6005', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JUOZAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'VAITKEVIČIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1943-03-19', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JUOZAS VAITKEVIČIUS: Marijampolė, Uosupio g. 12-14, LT-68157
+
+Making request for: DALIA GRIČENIENĖ (1971-03-10)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6306', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'DALIA', 'XML[uzk_parametrai][pavarde][VALUE]': 'GRIČENIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1971-03-10', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for DALIA GRIČENIENĖ: Marijampolės sav., Igliaukos sen., Nadpalių k. 1, LT-69117
+
+Making request for: ALGIMANTAS GRIČENA (1965-08-23)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6306', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ALGIMANTAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'GRIČENA', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-08-23', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ALGIMANTAS GRIČENA: Marijampolės sav., Igliaukos sen., Nadpalių k. 1, LT-69117
+
+Making request for: AURIMAS VALIUKAS (1982-03-22)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/8256', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'AURIMAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'VALIUKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1982-03-22', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for AURIMAS VALIUKAS: Marijampolės sav., Patašinės sen., Baraginės k., Geležinių g. 5, LT-69491
+
+Making request for: VIDA VILIONIENĖ (1954-10-18)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1195111', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VIDA', 'XML[uzk_parametrai][pavarde][VALUE]': 'VILIONIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1954-10-18', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VIDA VILIONIENĖ: Marijampolės sav., Sasnava, Vytauto g. 32, LT-69480
+
+Making request for: TOMAS RAČIŪNAS (1991-07-18)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/22188', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'TOMAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'RAČIŪNAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1991-07-18', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for TOMAS RAČIŪNAS: Marijampolės sav., Patašinės sen., Bukonių k. 2, LT-69103
+
+Making request for: AUDRUTIS RAČIŪNAS (1966-03-08)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/22188', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'AUDRUTIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'RAČIŪNAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1966-03-08', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for AUDRUTIS RAČIŪNAS: Marijampolės sav., Patašinės sen., Bukonių k. 2, LT-69103
+
+Making request for: LINA RAČIŪNIENĖ (1967-10-12)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/22188', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LINA', 'XML[uzk_parametrai][pavarde][VALUE]': 'RAČIŪNIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1967-10-12', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LINA RAČIŪNIENĖ: Akmenės r. sav., Akmenė, Sodo g. 7-14, LT-85361
+
+Making request for: INGRIDA PAUŽIENĖ (1983-10-26)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1131300', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'INGRIDA', 'XML[uzk_parametrai][pavarde][VALUE]': 'PAUŽIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1983-10-26', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for INGRIDA PAUŽIENĖ: Kaunas, Vaisių g. 16, LT-44181
+
+Making request for: VYTAUTAS PAUŽA (1981-08-20)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1131300', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VYTAUTAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'PAUŽA', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1981-08-20', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VYTAUTAS PAUŽA: Kauno r. sav., Garliavos apylinkių sen., Karkazų k., Rato g. 11, LT-53296
+
+Making request for: JONAS NARIJAUSKAS (1994-06-20)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/31412', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JONAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'NARIJAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1994-06-20', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JONAS NARIJAUSKAS: Marijampolės sav., Sasnavos sen., Puskelnių k., Marijampolės g. 4, LT-68105
+
+Making request for: DANĖ RUOČKUVIENĖ (1952-04-07)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/342877', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'DANĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'RUOČKUVIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1952-04-07', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for DANĖ RUOČKUVIENĖ: Marijampolė, Matulaičių g. 17, LT-68269
+
+Making request for: JOLANTA MIČIULIENĖ (1991-03-27)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/342877', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JOLANTA', 'XML[uzk_parametrai][pavarde][VALUE]': 'MIČIULIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1991-03-27', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JOLANTA MIČIULIENĖ: Vilnius, Ispanų g. 1, LT-11331
+
+Making request for: LORETA JAZDAUSKIENĖ (1966-10-01)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/342877', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LORETA', 'XML[uzk_parametrai][pavarde][VALUE]': 'JAZDAUSKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1966-10-01', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LORETA JAZDAUSKIENĖ: Kaunas, K. Grybausko g. 17, LT-46299
+
+Making request for: JUOZAS VAIČIULIS (1956-08-30)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5965', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JUOZAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'VAIČIULIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1956-08-30', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JUOZAS VAIČIULIS: Marijampolės sav., Mokolų sen., Svetlicos k., Tauro g. 16, LT-69330
+
+Making request for: POVILAS VILUTIS (1998-05-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5965', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'POVILAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'VILUTIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1998-05-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for POVILAS VILUTIS: Vilnius, Olimpiečių g. 3F-24, LT-09235
+
+Making request for: TEISUTIS ŽUKAUSKAS (1961-01-30)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6015', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'TEISUTIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŽUKAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-01-30', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for TEISUTIS ŽUKAUSKAS: Marijampolės sav., Patašinės sen., Baraginės k., Užupių g. 11, LT-69491
+
+Making request for: VIDA ŽUKAUSKIENĖ (1963-09-19)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/6015', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VIDA', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŽUKAUSKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1963-09-19', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VIDA ŽUKAUSKIENĖ: Marijampolės sav., Patašinės sen., Baraginės k., Užupių g. 11, LT-69491
+
+Making request for: DANUTĖ BIELEVIČIENĖ (1960-04-26)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1475907', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'DANUTĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'BIELEVIČIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1960-04-26', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for DANUTĖ BIELEVIČIENĖ: Marijampolės sav., Patašinės sen., Baraginės k., Baraginės g. 19, LT-69491
+
+Making request for: JANĖ ČERNIUVIENĖ (1950-06-29)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1475907', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JANĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'ČERNIUVIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1950-06-29', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JANĖ ČERNIUVIENĖ: Marijampolė, Beržų g. 13A-73, LT-68235
+
+Making request for: SAULIUS KISIELIUS (1977-02-09)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1476059', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'SAULIUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'KISIELIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1977-02-09', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for SAULIUS KISIELIUS: Marijampolės sav., Patašinės sen., Dambraukos k., Pušų g. 1, LT-69491
+
+Making request for: ŽIVILĖ KISIELIENĖ (1981-05-31)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1476059', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ŽIVILĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'KISIELIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1981-05-31', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ŽIVILĖ KISIELIENĖ: Marijampolės sav., Patašinės sen., Dambraukos k., Pušų g. 1, LT-69491
+
+Making request for: LEONARDAS KULBOKA (1962-10-28)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1706686', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LEONARDAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'KULBOKA', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1962-10-28', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LEONARDAS KULBOKA: Marijampolės sav., Patašinės sen., Baraginės k., Baraginės g. 13, LT-69491
+
+Making request for: ANTANAS SADAUSKAS (1943-04-11)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/2310028', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ANTANAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'SADAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1943-04-11', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ANTANAS SADAUSKAS: Marijampolės sav., Patašinės sen., Baraginės k., Liepų g. 5, LT-69491
+
+Making request for: AIDAS ŠAPNAGIS (1975-07-18)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/3431374', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'AIDAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŠAPNAGIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1975-07-18', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for AIDAS ŠAPNAGIS: Kaunas, Prancūzų g. 110G, LT-44414
+
+Making request for: VYTAUTAS ŽIGINSKAS (1989-10-14)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/3550873', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VYTAUTAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŽIGINSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1989-10-14', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VYTAUTAS ŽIGINSKAS: Marijampolės sav., Patašinės sen., Skriaudučio k., Juozo Montvilos g. 41, LT-69491
+
+Making request for: JUOZAS ŠUKYS (1961-09-01)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/88396', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JUOZAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŠUKYS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-09-01', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JUOZAS ŠUKYS: Marijampolės sav., Patašinės sen., Baraginės k., Baraginės g. 14, LT-69491
+
+Making request for: AGNĖ RIMŠIENĖ (1989-09-12)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5953', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'AGNĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'RIMŠIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1989-09-12', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for AGNĖ RIMŠIENĖ: Kaunas, Jotvingių g. 2-23, LT-48142
+
+Making request for: JONAS RAČIŪNAS (1961-11-05)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5953', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JONAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'RAČIŪNAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-11-05', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JONAS RAČIŪNAS: Marijampolės sav., Patašinės sen., Baraginės k., Užupių g. 1, LT-69491
+
+Making request for: VIDMANTAS RAČIŪNAS (1988-02-18)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/5953', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VIDMANTAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'RAČIŪNAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1988-02-18', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VIDMANTAS RAČIŪNAS: Marijampolė, P. Vaičaičio g. 27, LT-68302
+
+Making request for: ROMUALDAS LIEPINIS (1953-02-05)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1508625', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ROMUALDAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'LIEPINIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1953-02-05', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ROMUALDAS LIEPINIS: Marijampolės sav., Liudvinavas, Jaunimo g. 16, LT-69169
+
+Making request for: VYGANTAS LIEPINIS (1958-09-21)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1508625', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VYGANTAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'LIEPINIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1958-09-21', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VYGANTAS LIEPINIS: Marijampolės sav., Liudvinavo sen., Netičkampio k., Vingio g. 39, LT-69159
+
+Making request for: ŽILVINAS BELIUKEVIČIUS (1988-04-04)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/444459', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ŽILVINAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'BELIUKEVIČIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1988-04-04', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ŽILVINAS BELIUKEVIČIUS: Marijampolės sav., Patašinės sen., Baraginės k., Užupių g. 2, LT-69491
+
+Making request for: ONA PAŠUKONIENĖ (1942-01-15)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/8302', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ONA', 'XML[uzk_parametrai][pavarde][VALUE]': 'PAŠUKONIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1942-01-15', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ONA PAŠUKONIENĖ: Marijampolės sav., Igliškėliai, Javaravo g. 11, LT-69102
+
+Making request for: BIRUTĖ AUGUSTANAVIČIŪTĖ (1950-01-14)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/8324', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'BIRUTĖ', 'XML[uzk_parametrai][pavarde][VALUE]': 'AUGUSTANAVIČIŪTĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1950-01-14', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for BIRUTĖ AUGUSTANAVIČIŪTĖ: Marijampolė, Mokolų g. 75-8, LT-68169
+
+Making request for: SIGITA AUGUSTINAVIČIŪTĖ (1965-10-04)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/8324', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'SIGITA', 'XML[uzk_parametrai][pavarde][VALUE]': 'AUGUSTINAVIČIŪTĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-10-04', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for SIGITA AUGUSTINAVIČIŪTĖ: Marijampolės sav., Patašinės sen., Bajarskų k. 2, LT-69102
+
+Making request for: KĘSTUTIS JASIUKEVIČIUS (1965-10-21)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/8339', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'KĘSTUTIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'JASIUKEVIČIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-10-21', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for KĘSTUTIS JASIUKEVIČIUS: Marijampolė, Tarpučių g. 80, LT-68132
+
+Making request for: VALIUS TULICKAS (1965-07-16)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/2400294', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VALIUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'TULICKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-07-16', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VALIUS TULICKAS: Marijampolės sav., Patašinės sen., Bajarskų k. 3, LT-69102
+
+Making request for: VIRGINIJUS LEONAS (1963-05-08)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/19405', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'VIRGINIJUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'LEONAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1963-05-08', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for VIRGINIJUS LEONAS: Marijampolės sav., Patašinės sen., Trakiškių k., Skriaudučio g. 13, LT-69492
+
+Making request for: ARŪNAS CIBULSKAS (1965-07-14)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/12404', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ARŪNAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'CIBULSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-07-14', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ARŪNAS CIBULSKAS: Marijampolė, Vinčų g. 4, LT-68177
+
+Making request for: LORETA JANUŠKAITIENĖ (1976-04-04)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/12404', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LORETA', 'XML[uzk_parametrai][pavarde][VALUE]': 'JANUŠKAITIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1976-04-04', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LORETA JANUŠKAITIENĖ: Marijampolė, Vinčų g. 4, LT-68177
+
+Making request for: ARŪNAS ŠVEIKAUSKAS (1971-03-10)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/3527766', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ARŪNAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŠVEIKAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1971-03-10', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ARŪNAS ŠVEIKAUSKAS: Marijampolė, R. Juknevičiaus g. 106-16, LT-68194
+
+Making request for: IVETA ŠVEIKAUSKIENĖ (1971-04-25)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/3527766', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'IVETA', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŠVEIKAUSKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1971-04-25', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for IVETA ŠVEIKAUSKIENĖ: Marijampolė, R. Juknevičiaus g. 106-16, LT-68194
+
+Making request for: MYKOLAS ŠVEIKAUSKAS (1997-03-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/3421537', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'MYKOLAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'ŠVEIKAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1997-03-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for MYKOLAS ŠVEIKAUSKAS: Marijampolės sav., Patašinės sen., Patašinės k., Grabavos g. 6, LT-69105
+
+Making request for: LAIMUTIS BUJAUSKAS (1968-10-10)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/21634', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'LAIMUTIS', 'XML[uzk_parametrai][pavarde][VALUE]': 'BUJAUSKAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1968-10-10', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for LAIMUTIS BUJAUSKAS: Vilnius, J. Tiškevičiaus g. 11-15, LT-02232
+
+Making request for: MILDA ALBINA MEŠKEVIČIENĖ (1946-08-18)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/21634', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'MILDA ALBINA', 'XML[uzk_parametrai][pavarde][VALUE]': 'MEŠKEVIČIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1946-08-18', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for MILDA ALBINA MEŠKEVIČIENĖ: Kaunas, Kovo 11-osios g. 106-6, LT-49371
+
+Making request for: ONA BUJAUSKIENĖ (1942-03-24)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '18/21634', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ONA', 'XML[uzk_parametrai][pavarde][VALUE]': 'BUJAUSKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1942-03-24', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ONA BUJAUSKIENĖ: Marijampolė, Algirdo g. 8, LT-68269
+
+Making request for: JONAS MICKUS (1961-10-17)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103256', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JONAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'MICKUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-10-17', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JONAS MICKUS: Marijampolė, Panevėžio g. 101, LT-68120
+
+Making request for: SAULIUS JAKELAITIS (1961-07-08)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103302', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'SAULIUS', 'XML[uzk_parametrai][pavarde][VALUE]': 'JAKELAITIS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1961-07-08', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for SAULIUS JAKELAITIS: Marijampolė, Žaltyčio g. 29, LT-68270
+
+Making request for: SIMONA JAZDAUSKAITĖ (1999-02-01)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103340', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'SIMONA', 'XML[uzk_parametrai][pavarde][VALUE]': 'JAZDAUSKAITĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1999-02-01', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for SIMONA JAZDAUSKAITĖ: Kaunas, M. Daukšos g. 39-4, LT-44282
+
+Making request for: EVELINA LELEŠIŪTĖ (1992-06-08)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103366', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'EVELINA', 'XML[uzk_parametrai][pavarde][VALUE]': 'LELEŠIŪTĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1992-06-08', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for EVELINA LELEŠIŪTĖ: , 
+
+Making request for: GINTARAS RASLANAS (1964-09-22)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103366', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'GINTARAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'RASLANAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1964-09-22', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for GINTARAS RASLANAS: Kaunas, Radviliškio g. 19, LT-47423
+
+Making request for: JUSTINAS JURKŠAS (1941-05-15)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103366', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'JUSTINAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'JURKŠAS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1941-05-15', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for JUSTINAS JURKŠAS: Kaunas, Tvirtovės al. 17-47, LT-50166
+
+Making request for: MARIJA STEFANIJA RASLANIENĖ (1937-08-01)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103366', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'MARIJA STEFANIJA', 'XML[uzk_parametrai][pavarde][VALUE]': 'RASLANIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1937-08-01', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for MARIJA STEFANIJA RASLANIENĖ: Kaunas, Radviliškio g. 19-1, Lietuva, 
+
+Making request for: ROLANDAS LELEŠIUS (1965-11-04)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/1103366', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'ROLANDAS', 'XML[uzk_parametrai][pavarde][VALUE]': 'LELEŠIUS', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1965-11-04', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for ROLANDAS LELEŠIUS: Kaunas, V. Krėvės pr. 69-63, LT-50356
+
+Making request for: REGINA BARANAUSKIENĖ (1956-06-02)
+URL: https://mgvdisisorinis.registrucentras.lt/ivn/paieska-pagal-asmeni
+Payload: {'XML[uzk_parametrai][paieskos_tikslas][VALUE]': '10026', 'page_type': 'perziura', 'XML[uzk_parametrai][paieskos_pastaba][VALUE]': '44/2741828', 'XML[uzk_parametrai][asm_kodas][VALUE]': '', 'XML[uzk_parametrai][vardas][VALUE]': 'REGINA', 'XML[uzk_parametrai][pavarde][VALUE]': 'BARANAUSKIENĖ', 'XML[uzk_parametrai][tiksli_gim_data][VALUE]': '1956-06-02', 'XML[uzk_parametrai][gim_metai_nuo][VALUE]': '', 'XML[uzk_parametrai][gim_metai_iki][VALUE]': ''}
+Response status: 200
+Extracted for REGINA BARANAUSKIENĖ: Marijampolės sav., Patašinės sen., Patašinės k., Vyšnialaukio g. 5, LT-69104
+File updated: C:\Users\SauliusSteponavičius\ETP\ETP - ! Objektai\2024-72-XX_330kV Marijampolė\04_VE\!Viešinimas_SLD\!INFO\02_Patašinės sen._9 vnt\aggregated_output.csv
+Requests made to website: 68
+Unique individuals processed: 68
+Total individuals in file: 68
+PS C:\Users\SauliusSteponavičius\Documents\GitHub\automations-for-saulius> 
