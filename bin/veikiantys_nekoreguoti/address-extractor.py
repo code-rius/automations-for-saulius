@@ -147,7 +147,7 @@ def main():
             else:
                 address, postal_code = "", ""
                 print(f"Failed to extract for {vardas} {pavarde}. Status code: {response.status_code}")
-            time.sleep(3)  # Prevent rate limiting
+            time.sleep(2)  # Prevent rate limiting
         
         cache[person_key] = (address, postal_code)
     
@@ -170,14 +170,13 @@ def main():
                 while len(row) < 12:
                     row.append("")
                 
-                # If columns 12 and 13 are empty, fill them
+                # Always overwrite address and postal code
                 if len(row) >= 14:
-                    if not row[12] and not row[13]:
-                        row[12] = address
-                        row[13] = postal_code
+                    row[12] = address
+                    row[13] = postal_code
                 else:
                     row = row[:12] + [address, postal_code]
-    
+
         updated_rows.append(row)
 
     # Modified part: Always write to file, even in MOCK mode
