@@ -11,6 +11,7 @@ import os
 import copy
 from datetime import date
 from collections import defaultdict
+import re
 
 from dotenv import load_dotenv
 from docx import Document
@@ -210,29 +211,38 @@ class LetterGenerator:
         proj_pav_para = doc.paragraphs[proj_pav_para_index]
         elektrine_para = doc.paragraphs[elektrine_para_index]
         
-        # Process first project
-        first_elektrine_nr, first_project_info = next(iter(project_data.items()))
+        # Keep original project order for proj_pav_5 behavior
+        project_items = list(project_data.items())
+        first_elektrine_nr, first_project_info = project_items[0]
         
-        # Replace placeholders in original paragraphs
+        # Replace proj_pav_5 with first project's name (unchanged)
         for run in proj_pav_para.runs:
             if "proj_pav_5" in run.text:
-                run.text = run.text.replace("proj_pav_5", first_project_info["projekt_pav"])
+                run.text = run.text.replace("proj_pav_5", first_project_info.get("projekt_pav", ""))
         
+        # Build sorted list of elektrine keys by numeric part after "VE"
+        def _ve_sort_key(key):
+            m = re.search(r"VE(\d+)", key, re.IGNORECASE)
+            return int(m.group(1)) if m else float("inf")
+        
+        sorted_keys = sorted(project_data.keys(), key=_ve_sort_key)
+        
+        # Replace elektrines_numeris_11 placeholder with ascending-ordered generator list (comma separated)
+        formatted_list = ", ".join(sorted_keys)
         for run in elektrine_para.runs:
             if "elektrines_numeris_11" in run.text:
-                run.text = run.text.replace("elektrines_numeris_11", first_elektrine_nr)
+                run.text = run.text.replace("elektrines_numeris_11", formatted_list)
         
-        # Skip the first project as we've already processed it
-        project_items = list(project_data.items())
+        # Skip the first project as we've already processed it (proj_pav paragraphs preserved in template order)
         if len(project_items) <= 1:
             return
             
-        # Process additional projects
+        # Process additional projects (append proj_pav paragraphs in original project_data order)
         index_for_proj = proj_pav_para_index + 1
         
         for elektrine_nr, project_info in project_items[1:]:
-            # Create a new project paragraph
-            new_para = self._create_project_paragraph(doc, proj_pav_para, elektrine_nr)
+            # Create a new project paragraph (pass project name to include address)
+            new_para = self._create_project_paragraph(doc, proj_pav_para, elektrine_nr, project_info.get("projekt_pav", ""))
             
             # Insert at the correct position and remove from end
             doc._body._element.insert(index_for_proj, new_para._element)
@@ -241,8 +251,8 @@ class LetterGenerator:
             # Update index for next insertion
             index_for_proj += 1
     
-    def _create_project_paragraph(self, doc, template_para, elektrine_nr):
-        """Create a formatted project paragraph."""
+    def _create_project_paragraph(self, doc, template_para, elektrine_nr, project_pav=""):
+        """Create a formatted project paragraph including project name/address."""
         new_para = doc.add_paragraph()
         FormatHelper.copy_para_format(template_para, new_para)
         
@@ -251,13 +261,33 @@ class LetterGenerator:
         quote_open.font.name = "Arial"
         quote_open.font.size = Pt(11)
         
-        # Add content
-        content = f"Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės {elektrine_nr}, statybos projektas"
+        # Normalize and compose content without duplicating full phrase
+        prefix = "Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio, vėjo elektrinės"
+        proj = (project_pav or "").strip()
+        
+        # If projekt_pav already contains the full prefix (possibly with elektrine_nr), use it (avoid duplication)
+        if proj:
+            if prefix.lower() in proj.lower():
+                # If elektrine_nr missing inside projekt_pav, ensure it's present once
+                if elektrine_nr and elektrine_nr not in proj:
+                    # remove any leading/trailing punctuation to join cleanly
+                    proj_clean = proj.strip(' ,;.')
+                    content = f"{prefix} {elektrine_nr}, {proj_clean}"
+                else:
+                    content = proj
+            else:
+                # projekt_pav likely just location/address -> append into template phrase
+                cleaned = re.sub(r"\s*[,;:]?\s*statybos projektas\.?$", "", proj, flags=re.IGNORECASE).strip(' ,;.')
+                content = f"{prefix} {elektrine_nr}, {cleaned}, statybos projektas"
+        else:
+            # Fallback
+            content = f"{prefix} {elektrine_nr}, statybos projektas"
+        
         content_run = new_para.add_run(content)
         content_run.font.name = "Arial"
         content_run.font.size = Pt(11)
         
-        # Add closing quote
+        # Add closing quote and semicolon/quote char matching template
         quote_close = new_para.add_run("\";")
         quote_close.font.name = "Arial"
         quote_close.font.size = Pt(11)
@@ -265,41 +295,65 @@ class LetterGenerator:
         return new_para
     
     def _add_attestation_paragraphs(self, doc, project_data):
-        """Add attestation paragraphs to the document."""
-        # Find the "Pridedama:" paragraph
+        """Insert attestation bullets after 'Pridedama:' in the same order as project paragraphs.
+        Use the template's attestation paragraph as source so each bullet gets a single VE number.
+        """
         pridedama_index = DocumentHelper.find_paragraph_with_text(doc, "Pridedama:")
         if pridedama_index < 0:
             return
-            
-        # Find the first attestation paragraph to use as template
-        first_attestation_para = None
-        attestation_index = None
-        
+
+        # Determine VE order by scanning project paragraphs before Pridedama
+        proj_prefix = "Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio"
+        ordered_ves = []
         for i, para in enumerate(doc.paragraphs):
-            if i > pridedama_index and "Skelbimas apie" in para.text:
-                first_attestation_para = para
-                attestation_index = i + 1
+            if i >= pridedama_index:
                 break
-        
-        if not first_attestation_para or attestation_index is None:
-            return
-            
-        # Skip the first project as its attestation paragraph is already in the template
-        project_items = list(project_data.items())
-        if len(project_items) <= 1:
-            return
-            
-        # Add attestation paragraphs for additional projects
-        for elektrine_nr, project_info in project_items[1:]:
-            # Create a new attestation paragraph
-            new_attestation = self._create_attestation_paragraph(doc, first_attestation_para, elektrine_nr)
-            
-            # Insert at the correct position and remove from end
-            doc._body._element.insert(attestation_index, new_attestation._element)
-            doc._body._element.remove(doc.paragraphs[-1]._element)
-            
-            # Update index for next insertion
-            attestation_index += 1
+            text = para.text or ""
+            if proj_prefix in text:
+                m = re.findall(r"\bVE[0-9A-Za-z._-]*", text)
+                if m:
+                    ordered_ves.append(m[0])
+        if not ordered_ves:
+            ordered_ves = list(project_data.keys())
+
+        # Remove existing attestation paragraphs immediately after Pridedama:
+        start = pridedama_index + 1
+        end = start
+        while end < len(doc.paragraphs) and ("Skelbimas apie" in doc.paragraphs[end].text or "projektinių pasiūlymų viešinimą" in doc.paragraphs[end].text):
+            end += 1
+        for idx in range(end - 1, start - 1, -1):
+            p = doc.paragraphs[idx]._p
+            parent = p.getparent()
+            if parent is not None:
+                parent.remove(p)
+
+        # Use original template attestation paragraph (keeps formatting clean)
+        template_attestation_para = None
+        for para in self.template_doc.paragraphs:
+            if "Skelbimas apie" in para.text:
+                template_attestation_para = para
+                break
+        if template_attestation_para is None:
+            # fallback to using the current doc paragraph at pridedama_index (if any)
+            if pridedama_index + 1 < len(doc.paragraphs):
+                template_attestation_para = doc.paragraphs[pridedama_index + 1]
+            else:
+                template_attestation_para = None
+
+        # Insert attestation bullets one VE per paragraph (in derived order)
+        insert_pos = pridedama_index + 1
+        for ve in ordered_ves:
+            # create paragraph (appends one to doc) using template for formatting
+            source_para = template_attestation_para if template_attestation_para is not None else doc.paragraphs[pridedama_index]
+            new_att = self._create_attestation_paragraph(doc, source_para, ve)
+            # insert deep copy at target position and remove appended original
+            new_elem = new_att._p
+            new_copy = copy.deepcopy(new_elem)
+            doc._body._element.insert(insert_pos, new_copy)
+            parent = new_elem.getparent()
+            if parent is not None:
+                parent.remove(new_elem)
+            insert_pos += 1
     
     def _create_attestation_paragraph(self, doc, template_para, elektrine_nr):
         """Create a formatted attestation paragraph."""
