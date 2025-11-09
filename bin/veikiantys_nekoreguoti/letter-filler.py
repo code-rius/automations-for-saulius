@@ -295,31 +295,36 @@ class LetterGenerator:
         return new_para
     
     def _add_attestation_paragraphs(self, doc, project_data):
-        """Insert attestation bullets after 'Pridedama:' in the same order as project paragraphs.
-        Use the template's attestation paragraph as source so each bullet gets a single VE number.
-        """
+        """Insert attestation bullets after 'Pridedama:' — build VE list from project_data (ascending numeric)."""
+        # find or insert 'Pridedama:' paragraph
         pridedama_index = DocumentHelper.find_paragraph_with_text(doc, "Pridedama:")
         if pridedama_index < 0:
-            return
+            # try to place after the info paragraph or after regulation paragraph
+            info_idx = DocumentHelper.find_paragraph_with_text(doc, "Informacija apie")
+            reg_idx = DocumentHelper.find_paragraph_with_text(doc, "Šis pranešimas yra informacinio pobūdžio")
+            if info_idx >= 0:
+                insert_at = info_idx + 1
+            elif reg_idx >= 0:
+                insert_at = reg_idx + 1
+            else:
+                insert_at = len(doc.paragraphs)
+            # insert a blank line and then Pridedama:
+            blank = doc.add_paragraph("")
+            doc._body._element.insert(insert_at, blank._p)
+            parent = blank._p.getparent()
+            if parent is not None:
+                parent.remove(blank._p)
+            pr_para = doc.add_paragraph("Pridedama:")
+            doc._body._element.insert(insert_at + 1, pr_para._p)
+            parent = pr_para._p.getparent()
+            if parent is not None:
+                parent.remove(pr_para._p)
+            pridedama_index = insert_at + 1
 
-        # Determine VE order by scanning project paragraphs before Pridedama
-        proj_prefix = "Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio"
-        ordered_ves = []
-        for i, para in enumerate(doc.paragraphs):
-            if i >= pridedama_index:
-                break
-            text = para.text or ""
-            if proj_prefix in text:
-                m = re.findall(r"\bVE[0-9A-Za-z._-]*", text)
-                if m:
-                    ordered_ves.append(m[0])
-        if not ordered_ves:
-            ordered_ves = list(project_data.keys())
-
-        # Remove existing attestation paragraphs immediately after Pridedama:
+        # Remove existing attestation bullets after Pridedama:
         start = pridedama_index + 1
         end = start
-        while end < len(doc.paragraphs) and ("Skelbimas apie" in doc.paragraphs[end].text or "projektinių pasiūlymų viešinimą" in doc.paragraphs[end].text):
+        while end < len(doc.paragraphs) and ("Skelbimas apie" in (doc.paragraphs[end].text or "") or "projektinių pasiūlymų viešinimą" in (doc.paragraphs[end].text or "")):
             end += 1
         for idx in range(end - 1, start - 1, -1):
             p = doc.paragraphs[idx]._p
@@ -327,29 +332,51 @@ class LetterGenerator:
             if parent is not None:
                 parent.remove(p)
 
-        # Use original template attestation paragraph (keeps formatting clean)
+        # Build ordered VE list from project_data (sort by numeric part after "VE")
+        def _ve_sort_key(k):
+            m = re.search(r"VE(\d+)", k, re.IGNORECASE)
+            return int(m.group(1)) if m else float("inf")
+        ordered_ves = sorted(list(project_data.keys()), key=_ve_sort_key)
+
+        # If no project_data available, try to derive from document content as fallback
+        if not ordered_ves:
+            proj_prefix = "Energijos iš atsinaujinančių išteklių gamybos paskirties inžinerinio statinio"
+            for i, para in enumerate(doc.paragraphs):
+                if i >= pridedama_index:
+                    break
+                text = para.text or ""
+                if proj_prefix in text:
+                    m = re.findall(r"\bVE[0-9A-Za-z._-]*", text)
+                    if m:
+                        ordered_ves.append(m[0])
+
+        if not ordered_ves:
+            return
+
+        # Find a template attestation paragraph for formatting (from template_doc first)
         template_attestation_para = None
         for para in self.template_doc.paragraphs:
             if "Skelbimas apie" in para.text:
                 template_attestation_para = para
                 break
         if template_attestation_para is None:
-            # fallback to using the current doc paragraph at pridedama_index (if any)
-            if pridedama_index + 1 < len(doc.paragraphs):
-                template_attestation_para = doc.paragraphs[pridedama_index + 1]
-            else:
-                template_attestation_para = None
+            # fallback: try to find any bullet paragraph in current doc to copy numbering/format
+            for para in doc.paragraphs:
+                # heuristic: contains bullet words but not the full VE list
+                if "Skelbimas apie" in (para.text or ""):
+                    template_attestation_para = para
+                    break
 
-        # Insert attestation bullets one VE per paragraph (in derived order)
+        # Insert one attestation paragraph per VE (preserve numbering/format when possible)
         insert_pos = pridedama_index + 1
         for ve in ordered_ves:
-            # create paragraph (appends one to doc) using template for formatting
             source_para = template_attestation_para if template_attestation_para is not None else doc.paragraphs[pridedama_index]
             new_att = self._create_attestation_paragraph(doc, source_para, ve)
-            # insert deep copy at target position and remove appended original
+            # insert a deep copy of the newly created paragraph element at desired position
             new_elem = new_att._p
             new_copy = copy.deepcopy(new_elem)
             doc._body._element.insert(insert_pos, new_copy)
+            # remove the appended original (created by _create_attestation_paragraph)
             parent = new_elem.getparent()
             if parent is not None:
                 parent.remove(new_elem)
